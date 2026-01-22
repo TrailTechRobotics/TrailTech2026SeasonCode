@@ -80,6 +80,15 @@ public class RobotContainer {
         .onTrue(new InstantCommand(
             () -> m_robotDrive.zeroHeading(),
             m_robotDrive));
+    new trigger(m_driverController::getLeftBumber).whileTrue(new RunCommand(
+      () -> m_robotDrive.drive(
+        -m_driverController.getLeftY(),
+        -m_driverController.getLeftX(),
+        LimelightHelper.getTX("limelight") * -0.05,
+        false
+      ),
+      m_robotDrive
+    ));
   }
 
   /**
