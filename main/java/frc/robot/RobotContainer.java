@@ -119,10 +119,10 @@ public class RobotContainer {
    // m_driverController.b().whileTrue(new LimelightBackCenterCommand(m_limelightBack, m_robotDrive, m_driverController));
     m_driverController.b().whileFalse(new RunCommand(() -> {m_keyB = false;}));
 
-    m_driverController.leftTrigger().whileTrue(new RunCommand(() -> {m_launcher.setSpeed(PUT LAUNCHER BACKWARDS SPEED HERE);}));
-    m_driverController.rightTrigger().whileTrue(new RunCommand(() -> {m_launcher.setSpeed(PUT LAUNCHER SPEED HERE);}));
-    m_driverController.leftTrigger().whileFalse(new RunCommand(() -> {m_launcher.setSpeed(0.0);}));
-    m_driverController.rightTrigger().whileTrue(new RunCommand(() -> {m_launcher.setSpeed(0.0);}));
+    m_driverController.leftTrigger().whileTrue(new RunCommand(() -> {m_launcher.setLauncherSpeed(PUT LAUNCHER BACKWARDS SPEED HERE);}));
+    m_driverController.rightTrigger().whileTrue(new RunCommand(() -> {m_launcher.setLauncherSpeed(PUT LAUNCHER SPEED HERE);}));
+    m_driverController.leftTrigger().whileFalse(m_launcher.getLauncherSpeed() == 0.0 ? new RunCommand(() -> {m_launcher.setLauncherSpeed(0.0);}) : null);
+    m_driverController.rightTrigger().whileFalse(m_launcher.getLauncherSpeed() == 0.0 ? new RunCommand(() -> {m_launcher.setLauncherSpeed(0.0);}) : null);
   }
 //UNCOMMENT THESE IN BUTTON BINDINGS FOR THE COMMAND OF THE STUFF, AFTR THE SUBSYSTEMS ARE MADE
 
