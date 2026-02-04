@@ -119,7 +119,10 @@ public class RobotContainer {
    // m_driverController.b().whileTrue(new LimelightBackCenterCommand(m_limelightBack, m_robotDrive, m_driverController));
     m_driverController.b().whileFalse(new RunCommand(() -> {m_keyB = false;}));
 
-    m_driverController.
+    m_driverController.leftTrigger().whileTrue(new RunCommand(() -> {m_launcher.setSpeed(PUT LAUNCHER BACKWARDS SPEED HERE);}));
+    m_driverController.rightTrigger().whileTrue(new RunCommand(() -> {m_launcher.setSpeed(PUT LAUNCHER SPEED HERE);}));
+    m_driverController.leftTrigger().whileFalse(new RunCommand(() -> {m_launcher.setSpeed(0.0);}));
+    m_driverController.rightTrigger().whileTrue(new RunCommand(() -> {m_launcher.setSpeed(0.0);}));
   }
 //UNCOMMENT THESE IN BUTTON BINDINGS FOR THE COMMAND OF THE STUFF, AFTR THE SUBSYSTEMS ARE MADE
 
@@ -129,11 +132,25 @@ public class RobotContainer {
       Right Joystick : Turn
       L3 : Nothing
       R3 : Nothing
-      Left Bumber : Fuelgrabber 
+      
+      Left Bumber : Fuelgrabber Scooper Out
+      Right Bumber : Fuelgrabber Scooper In
+      POV Left : Fuelgrabber Out
+      POV Right : Fuelgrabber In
+      A : Pin In
+      Y : Pin Out
+
+      POV Up : Climber Up
+      POV Down : Climber Down
+
+      Left Trigger : Launcher In
+      Right Trigger : Launcher Out
+
+      X : Limelight Front Align
+      B : Limelight Back Align
 
 
-
-
+      CHANGE HOWEVER NEEDED, MAYBE USE L3 AND R3 FOR LIMELIGHT STUFF IF MORE BUTTONS NEEDED
 */
   
   public boolean m_key(String i) {
