@@ -40,6 +40,9 @@ import frc.robot.commands.LimelightBackCenterCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import java.util.HashMap;
 import java.util.function.Supplier;
+import frc.robot.subsystems.LauncherSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.FuelgrabberSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -62,6 +65,10 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();  
   private final LimelightSubsystem m_limelightFront = new LimelightSubsystem("limelight-elyttr");
   //private final LimelightSubsystem m_limelightBack = new LimelightSubsystem("limelight-elyttrb");
+  private final FuelgrabberSubsystem m_fuelgrabber = new FuelgrabberSubsystem(SET CAN ID, SET CAN ID, SET CAN ID);
+  private final LauncherSubsystem m_launcher = new LauncherSubsystem(SET CAN ID, IDK HOW MANY MOTOR MAYBE SET MORE);
+  private final
+  
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
 
