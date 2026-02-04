@@ -43,6 +43,8 @@ import java.util.function.Supplier;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.FuelgrabberSubsystem;
+import frc.robot.commands.SlideInCommand;
+import frc.robot.commands.SlideOutCommand;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -119,12 +121,25 @@ public class RobotContainer {
    // m_driverController.b().whileTrue(new LimelightBackCenterCommand(m_limelightBack, m_robotDrive, m_driverController));
     m_driverController.b().whileFalse(new RunCommand(() -> {m_keyB = false;}));
 
-    m_driverController.leftTrigger().whileTrue(new RunCommand(() -> {m_launcher.setLauncherSpeed(PUT LAUNCHER BACKWARDS SPEED HERE);}));
-    m_driverController.rightTrigger().whileTrue(new RunCommand(() -> {m_launcher.setLauncherSpeed(PUT LAUNCHER SPEED HERE);}));
-    m_driverController.leftTrigger().whileFalse(m_launcher.getLauncherSpeed() == 0.0 ? new RunCommand(() -> {m_launcher.setLauncherSpeed(0.0);}) : null);
-    m_driverController.rightTrigger().whileFalse(m_launcher.getLauncherSpeed() == 0.0 ? new RunCommand(() -> {m_launcher.setLauncherSpeed(0.0);}) : null);
-  }
-//UNCOMMENT THESE IN BUTTON BINDINGS FOR THE COMMAND OF THE STUFF, AFTR THE SUBSYSTEMS ARE MADE
+    //m_driverController.leftTrigger().whileTrue(new RunCommand(() -> {m_launcher.setLauncherSpeed(PUT LAUNCHER BACKWARDS SPEED HERE);}));
+    //m_driverController.rightTrigger().whileTrue(new RunCommand(() -> {m_launcher.setLauncherSpeed(PUT LAUNCHER SPEED HERE);}));
+    //m_driverController.leftTrigger().whileFalse(m_launcher.getLauncherSpeed() == 0.0 ? new RunCommand(() -> {m_launcher.setLauncherSpeed(0.0);}) : null);
+    //m_driverController.rightTrigger().whileFalse(m_launcher.getLauncherSpeed() == 0.0 ? new RunCommand(() -> {m_launcher.setLauncherSpeed(0.0);}) : null);
+    
+    //m_driverController.a().whileTrue(new RunCommand(() -> {m_fuelgrabber.setPinSpeed(PUT PIN SPEED HERE);}));
+    //m_driverController.y().whileTrue(new RunCommand(() -> {m_fuelgrabber.setPinSpeed(PUT PIN BACKWARDS SPEED HERE);}));
+    //m_driverController.a().whileFalse(m_fuelgrabber.getPinSpeed() == 0.0 ? new RunCommand(() -> {m_fuelgrabber.setPinSpeed(0.0);}) : null);
+    //m_driverController.y().whileFalse(m_fuelgrabber.getPinSpeed() == 0.0 ? new RunCommand(() -> {m_fuelgrabber.setPinSpeed(0.0);}) : null);
+  
+    //m_driverController.povLeft().whileTrue(new RunCommand(SlideOutCommand()));
+    //m_driverController.povRight().whileTrue(new RunCommand(SlideInCommand()));
+
+    //m_driverController.leftBumber().whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(PUT SCOOPER SPEED HERE)}));
+    //m_driverController.rightBumber().whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(PUT SCOOPER BACKWARDS SPEED HERE)}));
+    //m_driverController.leftBumber().whileFalse(m_fuelgrabber.getScooperSpeed() == 0.0 ? new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(0.0)}) : null);
+    //m_driverController.rightBumber().whileFalse(m_fuelgrabber.getScooperSpeed() == 0.0 ? new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(0.0)}) : null);
+  }  //FIX THE SET 0 TRIGGERS TO CROSS CHECK CONTROLS INSTEAD OF SPEEDS AND ADD FUNCTIONS IN SUBSYSTEMS
+//UNCOMMENT THESE FOR THE COMMAND OF THE STUFF, AFTR THE SUBSYSTEMS ARE MADE
 
 /*
               BUTTON BINDINGS
@@ -133,11 +148,11 @@ public class RobotContainer {
       L3 : Nothing
       R3 : Nothing
       
-      Left Bumber : Fuelgrabber Scooper Out
+      Left Bumber : Fuelgrabber Scooper Out  (Pulls fuel off ground)
       Right Bumber : Fuelgrabber Scooper In
-      POV Left : Fuelgrabber Out
+      POV Left : Fuelgrabber Out    (Full piece that have the "Scooper")
       POV Right : Fuelgrabber In
-      A : Pin In
+      A : Pin In    (Thing to move fuel after scooper picks em up)    (as in roller pin like the kitchen tool cause it looked like that on cad)
       Y : Pin Out
 
       POV Up : Climber Up
