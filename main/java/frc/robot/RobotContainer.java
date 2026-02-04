@@ -65,9 +65,10 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();  
   private final LimelightSubsystem m_limelightFront = new LimelightSubsystem("limelight-elyttr");
   //private final LimelightSubsystem m_limelightBack = new LimelightSubsystem("limelight-elyttrb");
-  private final FuelgrabberSubsystem m_fuelgrabber = new FuelgrabberSubsystem(SET CAN ID, SET CAN ID, SET CAN ID);
-  private final LauncherSubsystem m_launcher = new LauncherSubsystem(SET CAN ID, IDK HOW MANY MOTOR MAYBE SET MORE);
-  private final
+  //private final FuelgrabberSubsystem m_fuelgrabber = new FuelgrabberSubsystem(SET CAN ID, SET CAN ID, SET CAN ID);
+  //private final LauncherSubsystem m_launcher = new LauncherSubsystem(SET CAN ID, IDK HOW MANY MOTOR MAYBE SET MORE);
+  //private final ClimberSubsystem m_climber = new ClimberSubsystem(SET CAN ID, SET CAN ID);
+//UNCOMMENT THESE FOR THE BACK LIMELIGHT, FUELGRABBER STUFF, LAUNCHER STUFF, AND CLIMBER STUFF !!!IMPORTANT!!!
   
   CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
 
@@ -109,22 +110,32 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_driverController.rightBumper().whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));
-    m_driverController.start().onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading(),m_robotDrive));
+    //m_driverController.rightBumper().whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive));   IDK WHAT THESE TWO ARE THEY WERE PUT IN DURING LIMELIGHT STUFF IN DECEMEBR
+    //m_driverController.start().onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading(),m_robotDrive));  UNCOMMENT IF EVERTHING BREAKS FSR
     m_driverController.x().whileTrue(new RunCommand(() -> {m_keyX = true;}));
     m_driverController.x().whileTrue(new LimelightFrontCenterCommand(m_limelightFront, m_robotDrive, m_driverController));
     m_driverController.x().whileFalse(new RunCommand(() -> {m_keyX = false;}));
     m_driverController.b().whileTrue(new RunCommand(() -> {m_keyB = true;}));
    // m_driverController.b().whileTrue(new LimelightBackCenterCommand(m_limelightBack, m_robotDrive, m_driverController));
     m_driverController.b().whileFalse(new RunCommand(() -> {m_keyB = false;}));
+
+    m_driverController.
   }
+//UNCOMMENT THESE IN BUTTON BINDINGS FOR THE COMMAND OF THE STUFF, AFTR THE SUBSYSTEMS ARE MADE
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+/*
+              BUTTON BINDINGS
+      Left Joystick : Move
+      Right Joystick : Turn
+      L3 : Nothing
+      R3 : Nothing
+      Left Bumber : Fuelgrabber 
 
+
+
+
+*/
+  
   public boolean m_key(String i) {
     boolean ret = false;
     if (i == "x") {
