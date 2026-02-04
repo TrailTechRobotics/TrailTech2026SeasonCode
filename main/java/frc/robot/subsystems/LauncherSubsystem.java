@@ -26,7 +26,11 @@ public class LauncherSubsystem extends SubsystemBase {
   public void periodic() {
   }
 
-  public void move(double speed) {
+  public void setLauncherSpeed(double speed) {
     motor.set(speed);
+  }
+
+  public double getLauncherSpeed() {
+    return motor.get();
   }
 }
