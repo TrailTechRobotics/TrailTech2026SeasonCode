@@ -24,7 +24,8 @@ public class ClimberSubsystem extends SubsystemBase {
   public ClimberSubsystem(int climbID, int climbFollowerID) {
     climb = new SparkMax(climbID, MotorType.kBrushless);
     climbFollower = new SparkMax(climbFollowerID, MotorType.kBrushless);
-    climbFollower.isFollower();
+    climbFollower.follow(climb);
+    climbFollower.setInverted(true);
     climbEncoder = climb.getAbsoluteEncoder();
     climbPID = new PIDController(0.1, 0.0, 0.0);
     climbTraj = 0.0;
