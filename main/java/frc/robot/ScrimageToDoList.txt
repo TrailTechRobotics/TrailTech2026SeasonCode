@@ -3,7 +3,7 @@
 Part 1.      Limelight
         A. Configure
   Limelight cameras labled 1 and 2, for front and back respectively, must be plugged in via ethernet and on the pdh. Center both limelights left and right on the robot for best use.
-  Go to http://limelight-elyttr.local:5800 and http://limelight-elyttrb.local:5800 to configure the software of the front and back limelight respectively. (Such as where the limelight is on the robot)
+  Go to http://limelight-elyttr.local:5801 and http://limelight-elyttrb.local:5801 to configure the software of the front and back limelight respectively. (Such as where the limelight is on the robot)
   In RobotContainer.java, on lines 68 and 69, make sure both subsystems are initiated with their id(already supplied in). Uncomment the back limelight subsystem creation when it is plugged in.
   In RobotContainer.java, on lines 124 and 127, configure the button mapping for the LimelightFrontCenterCommand and LimelightBackCenterCommand (currently set to buttons x and b). Uncomment the LimelightBackCenterCommand when it is ready to be used.
   In both Lightlight*CenterCommand commands, tweak the following values: pidR (rotation pid), pidX (strafe pid), pidY (back and forward movement pid), FINAL_A (the final area (in percent) that the april takes up on the limelight, supplied to the pids, for back and forward movement), MAX_ROT (max speed of rotation), MAX_MOVE (max speed of movement(strafing and back and forward movement)), and other values if needed (such as pid tolerence and clamp values).
@@ -12,8 +12,8 @@ Part 1.      Limelight
   Create new commands for front and back limelights if wanted.
 
       B. Run
-  Go to http://limelight-elyttr.local:5800 / http://limelight-elyttrb.local:5800 for the configuration site of the limelight camera.
-  Go to http://limelight-elyttr.local:5801 / http://limelight-elyttrb.local:5801 for the site to view the limelight without the configuration stuff.
+  Go to http://limelight-elyttr.local:5801 / http://limelight-elyttrb.local:5801 for the configuration site of the limelight camera.
+  Go to http://limelight-elyttr.local:5800 / http://limelight-elyttrb.local:5800 for the site to view the limelight without the configuration stuff.
   Go to 10.104.90.22 / 10.104.90.23 for another address to view the configuration site.
   Go to FRC Pc Dashboard, opened by FRC Driverstation, for another place to view the limelight camera.
   Go to SmartDashboard, opened from frc start tools on visual studios to see printed variables.
@@ -22,7 +22,7 @@ Part 1.      Limelight
 
 
 Part 2.     Subsystems
-      A. Background Info
+      A. Background Info                       (I GOT SOME OF THESE WRONG)
   I have created three subsystems for the robot systems: FuelgrabberSubsystem to pick up and move fuel, LauncherSubsystem to launch the fuel, and ClimberSubsystem to climb the tower. (Whether or not these are correct for the built robot are unknown to me because I didn't get much info)
     >FuelgrabberSubsystem has three motors: The slide (trajectory based) to move the mechanism to pick up fuel, The scooper (speed based) to move fuel off of the ground, and The pin (as in roller pin yk) to move the fuel when its inside the robot.
     >LauncherSubsystem has one motor (current just called motor) (speed based) to launch the fuel.
@@ -47,7 +47,7 @@ Part 2.     Subsystems
 
 
 
-Part 3. Main Robot Stuff (I'm getting really tired of trying to make this look official)
+Part 3. Main Robot Stuff
     A. Configure
   Configure the Constants file to change robot specs, speeds, and drive and turn motor CAN ids.
   Configure Robot file to make sure scheduling is correct.
@@ -56,3 +56,16 @@ Part 3. Main Robot Stuff (I'm getting really tired of trying to make this look o
   Make sure all hardware and software is up to date.
   Make sure vender libraries, on visual studio, are up to date.
   Use last years code for help if need, current open on a txt files, otherwise found on our teams github.
+
+    B. Run
+  Open visual studios, open pathplanner, open limelight ips/sites, open driver station, open PC dashboard from driver statiion, open smart dashboard from visual studio start tools.
+  Build robot code on visual studio once, over internet, at start of session.
+  Connect controller to PC.
+  Connect robot over internet/ethernet.
+  Load limelight ips/sites.
+  If pigeon is used, calibrate it. (I dont know if it needs to be calibrated before each session or just once after robot is built)
+  Deploy robot code and pray for no bugs.
+  Change code, path planner autos, or whatever else and redeploy.
+
+
+IF I ADD MORE OR ADD STUFF ABOUT AUTO IT WILL BE ON GITHUB UNDER THE MOST RECENT PATH  ---THIS COPY WAS MADE AND PUT INTO THE VISUAL STUDIO CODE ON THE NIGHT OF THURSDAY THE FIFTH
