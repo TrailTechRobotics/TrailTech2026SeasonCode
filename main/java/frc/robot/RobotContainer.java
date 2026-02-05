@@ -96,6 +96,12 @@ public class RobotContainer {
                 true),   
             m_robotDrive));
 
+    //m_launcher.setDefaultCommand(new RunCommand(() -> m_launcher.setSpeed(0.0), m_launcher);
+    //m_fuelgrabber.setDefaultCommand(new RunCommand(() -> m_fuelgrabber.setScooperSpeed(0.0), m_fuelgrabber);
+    //m_fuelgrabber.setDefaultCommand(new RunCommand(() -> m_fuelgrabber.setPinSpeed(0.0), m_fuelgrabber);
+
+//UNCOMMENT THESE WHEN SUBSYSTEMS MADE, SHOULD BE AUTOMATICALLY OVERWRITTEN WHEN BUTTONS ARE PRESSED, THEN RUN WHEN NOT PRESSED
+    
     autoChooser = AutoBuilder.buildAutoChooser();
     //autoChooser.setDefaultOption("Default Auto", kDefaultAuto);
     //autoChooser.addOption("My Auto", kCustomAuto);
@@ -123,21 +129,18 @@ public class RobotContainer {
 
     //m_driverController.leftTrigger().whileTrue(new RunCommand(() -> {m_launcher.setLauncherSpeed(PUT LAUNCHER BACKWARDS SPEED HERE);}));
     //m_driverController.rightTrigger().whileTrue(new RunCommand(() -> {m_launcher.setLauncherSpeed(PUT LAUNCHER SPEED HERE);}));
-    //m_driverController.leftTrigger().whileFalse(m_launcher.getLauncherSpeed() == 0.0 ? new RunCommand(() -> {m_launcher.setLauncherSpeed(0.0);}) : null);
-    //m_driverController.rightTrigger().whileFalse(m_launcher.getLauncherSpeed() == 0.0 ? new RunCommand(() -> {m_launcher.setLauncherSpeed(0.0);}) : null);
-    
+  
     //m_driverController.a().whileTrue(new RunCommand(() -> {m_fuelgrabber.setPinSpeed(PUT PIN SPEED HERE);}));
     //m_driverController.y().whileTrue(new RunCommand(() -> {m_fuelgrabber.setPinSpeed(PUT PIN BACKWARDS SPEED HERE);}));
-    //m_driverController.a().whileFalse(m_fuelgrabber.getPinSpeed() == 0.0 ? new RunCommand(() -> {m_fuelgrabber.setPinSpeed(0.0);}) : null);
-    //m_driverController.y().whileFalse(m_fuelgrabber.getPinSpeed() == 0.0 ? new RunCommand(() -> {m_fuelgrabber.setPinSpeed(0.0);}) : null);
   
     //m_driverController.povLeft().whileTrue(new RunCommand(SlideOutCommand()));
     //m_driverController.povRight().whileTrue(new RunCommand(SlideInCommand()));
 
-    //m_driverController.leftBumber().whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(PUT SCOOPER SPEED HERE)}));
-    //m_driverController.rightBumber().whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(PUT SCOOPER BACKWARDS SPEED HERE)}));
-    //m_driverController.leftBumber().whileFalse(m_fuelgrabber.getScooperSpeed() == 0.0 ? new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(0.0)}) : null);
-    //m_driverController.rightBumber().whileFalse(m_fuelgrabber.getScooperSpeed() == 0.0 ? new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(0.0)}) : null);
+    //m_driverController.leftBumber().whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(PUT SCOOPER SPEED HERE);}));
+    //m_driverController.rightBumber().whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(PUT SCOOPER BACKWARDS SPEED HERE);}));
+
+ //   m_driverController.povUp().whileTrue(new RunCommand(() -> {m_climber.setTraj(CLIMBER TOP HEIGHT FOR PID HERE);}));
+ // IDK IF povDown or povUp IS CORRECT, CHANGE IF NEEDED   m_driverController.povDown().whileTrue(new RunCommand(() -> {m_climber.setTraj(CLIMBER BOTTOM FOR PID HERE);}));
   }  //FIX THE SET 0 TRIGGERS TO CROSS CHECK CONTROLS INSTEAD OF SPEEDS AND ADD FUNCTIONS IN SUBSYSTEMS
 //UNCOMMENT THESE FOR THE COMMAND OF THE STUFF, AFTR THE SUBSYSTEMS ARE MADE
 
