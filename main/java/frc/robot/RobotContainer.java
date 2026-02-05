@@ -136,8 +136,8 @@ public class RobotContainer {
     //m_driverController.povLeft().whileTrue(new RunCommand(SlideOutCommand()));
     //m_driverController.povRight().whileTrue(new RunCommand(SlideInCommand()));
 
-    //m_driverController.leftBumber().whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(PUT SCOOPER SPEED HERE);}));
-    //m_driverController.rightBumber().whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(PUT SCOOPER BACKWARDS SPEED HERE);}));
+    //m_driverController.leftBumper().whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(PUT SCOOPER SPEED HERE);}));
+    //m_driverController.rightBumper().whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(PUT SCOOPER BACKWARDS SPEED HERE);}));
 
  //   m_driverController.povUp().whileTrue(new RunCommand(() -> {m_climber.setClimbTraj(CLIMBER TOP HEIGHT FOR PID HERE);}));
  // IDK IF povDown or povUp IS CORRECT, CHANGE IF NEEDED   m_driverController.povDown().whileTrue(new RunCommand(() -> {m_climber.setClimbTraj(CLIMBER BOTTOM FOR PID HERE);}));
@@ -151,8 +151,8 @@ public class RobotContainer {
       L3 : Nothing
       R3 : Nothing
       
-      Left Bumber : Fuelgrabber Scooper Out  (Pulls fuel off ground)
-      Right Bumber : Fuelgrabber Scooper In
+      Left Bumper : Fuelgrabber Scooper Out  (Pulls fuel off ground)
+      Right Bumper : Fuelgrabber Scooper In
       POV Left : Fuelgrabber Out    (Full piece that have the "Scooper")
       POV Right : Fuelgrabber In
       A : Pin In    (Thing to move fuel after scooper picks em up)    (as in roller pin like the kitchen tool cause it looked like that on cad)
