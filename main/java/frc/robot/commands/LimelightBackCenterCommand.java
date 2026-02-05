@@ -87,7 +87,7 @@ public class LimelightBackCenterCommand extends Command {
    // SmartDashboard.putNumber("XSPEED: ", xSpeed);
    // SmartDashboard.putNumber("YSPEED: ", ySpeed);
 
-    m_drive.drive(-ySpeed, -xSpeed, rot, true);
+    m_drive.drive(-ySpeed, -xSpeed, -rot, true);
   }
 
   @Override
