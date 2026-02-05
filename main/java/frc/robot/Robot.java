@@ -72,10 +72,10 @@ public class Robot extends TimedRobot {
      * = new MyAutoCommand(); break; case "Default Auto": default:
      * autonomousCommand = new ExampleCommand(); break; }
      */
-
+//THIS MIGHT BE IMPORTANT IDK, IGNORE IF AUTONOMOUS ISNT NEEDED
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      //m_autonomousCommand.schedule();
+      m_autonomousCommand.schedule(); //COMMMENT OUT IF STUFF BREAKS AND AUTO ISNT GONNAN BE USED
     }
   }
 
