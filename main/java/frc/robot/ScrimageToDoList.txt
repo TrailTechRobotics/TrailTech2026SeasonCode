@@ -1,0 +1,58 @@
+                  To Do List For The First Scrimage For Code And Other Software And Configuration Stuff For First Scrimage
+
+Part 1.      Limelight
+        A. Configure
+  Limelight cameras labled 1 and 2, for front and back respectively, must be plugged in via ethernet and on the pdh. Center both limelights left and right on the robot for best use.
+  Go to http://limelight-elyttr.local:5800 and http://limelight-elyttrb.local:5800 to configure the software of the front and back limelight respectively. (Such as where the limelight is on the robot)
+  In RobotContainer.java, on lines 68 and 69, make sure both subsystems are initiated with their id(already supplied in). Uncomment the back limelight subsystem creation when it is plugged in.
+  In RobotContainer.java, on lines 124 and 127, configure the button mapping for the LimelightFrontCenterCommand and LimelightBackCenterCommand (currently set to buttons x and b). Uncomment the LimelightBackCenterCommand when it is ready to be used.
+  In both Lightlight*CenterCommand commands, tweak the following values: pidR (rotation pid), pidX (strafe pid), pidY (back and forward movement pid), FINAL_A (the final area (in percent) that the april takes up on the limelight, supplied to the pids, for back and forward movement), MAX_ROT (max speed of rotation), MAX_MOVE (max speed of movement(strafing and back and forward movement)), and other values if needed (such as pid tolerence and clamp values).
+  At the end of the execute command in both Limelight*CenterCommand commands, change the xSpeed, ySpeed, and rot values to be negative and/or positive if needed to invert direction/speeds.
+  Use SmartDashboard.putNumber(String (name on smartdashboard), double (of value)) to debug if needed.
+  Create new commands for front and back limelights if wanted.
+
+      B. Run
+  Go to http://limelight-elyttr.local:5800 / http://limelight-elyttrb.local:5800 for the configuration site of the limelight camera.
+  Go to http://limelight-elyttr.local:5801 / http://limelight-elyttrb.local:5801 for the site to view the limelight without the configuration stuff.
+  Go to 10.104.90.22 / 10.104.90.23 for another address to view the configuration site.
+  Go to FRC Pc Dashboard, opened by FRC Driverstation, for another place to view the limelight camera.
+  Go to SmartDashboard, opened from frc start tools on visual studios to see printed variables.
+  Buttons X and B should run the commands to center the robot on an april tag, using rotation, strafing, and forward and backwards movement. (Current new commands using area instead of y differencen are completely untested)
+
+
+
+Part 2.     Subsystems
+      A. Background Info
+  I have created three subsystems for the robot systems: FuelgrabberSubsystem to pick up and move fuel, LauncherSubsystem to launch the fuel, and ClimberSubsystem to climb the tower. (Whether or not these are correct for the built robot are unknown to me because I didn't get much info)
+    >FuelgrabberSubsystem has three motors: The slide (trajectory based) to move the mechanism to pick up fuel, The scooper (speed based) to move fuel off of the ground, and The pin (as in roller pin yk) to move the fuel when its inside the robot.
+    >LauncherSubsystem has one motor (current just called motor) (speed based) to launch the fuel.
+    >ClimberSubsystem has two motors: climb (trajectory based) to move the hook thingies, and climbFollower (follower of climb).
+    >FuelgrabberSubsystem has two command: SlideInCommand moves the slide to the inward position (0.0), and SlideOutCommand moves the slide to the outward position (temperarily 5.0).
+
+    B. Configure
+  Zero the Absolute Encode for the Slide motor on the inward position for the SlideInCommand to work properly.
+  Change the target trajectory in SlideOutCommand to reflect the outward location of the Absolute Encoder when at a desired point.
+  Modify the slidePID if needed.
+  Zero the Absolute encoder for the climb motor at the downwards position.
+  Modify the climbPID if needed.
+  Modify climbFollower.isInverted(true or false) if need, current set to true.
+  Modify the SparkMax for the climbFollower motor to ensure it follows the SparkMax for the climb motor.
+  Uncomment lines 70, 71, and 72 in RobotContainer to add the three subsystems, supply the required CAN ids as ints.
+  Uncomment lines 99, 100, and 101 in RobotContainer after subsystems are added to set default comments to set the speeds of speed based motors to zero when unused.
+  Uncomment a whole lotta stuff in configureButtonBindings in robotContainer to enable set the button bindings, add in the wanted speeds and climb trajectory for the bindings.
+  Use SmartDashboard.putNumber(String (name on smartdashboard), double (of value)) to debug if needed.
+  Change code, add commands, and add methods the subsystems if needed.
+  Change button bindings if needed.
+  Setup stuff on REV hardware manager.
+
+
+
+Part 3. Main Robot Stuff (I'm getting really tired of trying to make this look official)
+    A. Configure
+  Configure the Constants file to change robot specs, speeds, and drive and turn motor CAN ids.
+  Configure Robot file to make sure scheduling is correct.
+  Make sure gyro actually works if auto is used, otherwise take pigeon out of can.
+  Code other stuff and debug if need.
+  Make sure all hardware and software is up to date.
+  Make sure vender libraries, on visual studio, are up to date.
+  Use last years code for help if need, current open on a txt files, otherwise found on our teams github.
