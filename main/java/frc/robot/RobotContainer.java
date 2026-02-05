@@ -96,9 +96,9 @@ public class RobotContainer {
                 true),   
             m_robotDrive));
 
-    //m_launcher.setDefaultCommand(new RunCommand(() -> m_launcher.setSpeed(0.0), m_launcher);
-    //m_fuelgrabber.setDefaultCommand(new RunCommand(() -> m_fuelgrabber.setScooperSpeed(0.0), m_fuelgrabber);
-    //m_fuelgrabber.setDefaultCommand(new RunCommand(() -> m_fuelgrabber.setPinSpeed(0.0), m_fuelgrabber);
+    //m_launcher.setDefaultCommand(new RunCommand(() -> {m_launcher.setSpeed(0.0);}, m_launcher);
+    //m_fuelgrabber.setDefaultCommand(new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(0.0);}, m_fuelgrabber);
+    //m_fuelgrabber.setDefaultCommand(new RunCommand(() -> {m_fuelgrabber.setPinSpeed(0.0);}, m_fuelgrabber);
 
 //UNCOMMENT THESE WHEN SUBSYSTEMS MADE, SHOULD BE AUTOMATICALLY OVERWRITTEN WHEN BUTTONS ARE PRESSED, THEN RUN WHEN NOT PRESSED
     
@@ -139,8 +139,8 @@ public class RobotContainer {
     //m_driverController.leftBumber().whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(PUT SCOOPER SPEED HERE);}));
     //m_driverController.rightBumber().whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperSpeed(PUT SCOOPER BACKWARDS SPEED HERE);}));
 
- //   m_driverController.povUp().whileTrue(new RunCommand(() -> {m_climber.setTraj(CLIMBER TOP HEIGHT FOR PID HERE);}));
- // IDK IF povDown or povUp IS CORRECT, CHANGE IF NEEDED   m_driverController.povDown().whileTrue(new RunCommand(() -> {m_climber.setTraj(CLIMBER BOTTOM FOR PID HERE);}));
+ //   m_driverController.povUp().whileTrue(new RunCommand(() -> {m_climber.setClimbTraj(CLIMBER TOP HEIGHT FOR PID HERE);}));
+ // IDK IF povDown or povUp IS CORRECT, CHANGE IF NEEDED   m_driverController.povDown().whileTrue(new RunCommand(() -> {m_climber.setClimbTraj(CLIMBER BOTTOM FOR PID HERE);}));
   }  //FIX THE SET 0 TRIGGERS TO CROSS CHECK CONTROLS INSTEAD OF SPEEDS AND ADD FUNCTIONS IN SUBSYSTEMS
 //UNCOMMENT THESE FOR THE COMMAND OF THE STUFF, AFTR THE SUBSYSTEMS ARE MADE
 
