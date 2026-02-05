@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     if (m_autonomousCommand != null) {
-      //CommandScheduler.getInstance().schedule(m_autonomousCommand); UNCOMMENT IF STUFF BREAKS
+      //CommandScheduler.getInstance().schedule(m_autonomousCommand); UNCOMMENT IF STUFF BREAKS, CHANGE TO CANCEL AUTO COMMAND MAYBE m_autonomousCommand.cancel();
     }
   }
 
