@@ -16,7 +16,7 @@ public class SlideOutCommand extends Command {
   public SlideOutCommand(FuelgrabberSubsystem fuelGrabber) {
     this.fuelGrabber = fuelGrabber;
     addRequirements(fuelGrabber);
-    outPos = 5.0; // POSTIION OF BALGRABER WHNE THING IS OUT
+    outPos = 23.0; // POSTIION OF BALGRABER WHNE THING IS OUT
   }
 
   

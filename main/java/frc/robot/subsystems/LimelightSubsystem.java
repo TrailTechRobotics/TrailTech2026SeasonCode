@@ -12,6 +12,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
+import frc.robot.LimelightHelpers;
+
+
+import java.lang.Math;
 
 public class LimelightSubsystem extends SubsystemBase {
   private String ll;
@@ -44,4 +50,34 @@ public class LimelightSubsystem extends SubsystemBase {
   public boolean getLLTV() {
     return (NetworkTableInstance.getDefault().getTable(ll).getEntry("tv").getDouble(0) == 1.0);
   }
+
+  public double getLLDISTANCE() {
+    double h1 = 30; //LENS HEIGHT IN INCHES
+    double h2 = 44.25; //APRIL TAG HEIGHT IN INCHES
+    double a = getLLTY() * (3.14159 / 180.0);
+    double d = (h2 - h1) / (Math.tan(a));
+    return d; //RETURNS IN INCHES
+  }
+
+  public double CALCULATESHOOTVELO() {
+    LimelightHelpers.setFiducial3DOffset("elyttr",
+      -0.584,
+      0.0,
+      0.0
+    );
+
+    double velo = 1.0;
+    double d = Math.abs(Units.inchesToMeters(getLLDISTANCE()));
+    velo = d * 9.81;
+    velo /= Math.sin(2 * 70); //USES LAUNCH ANGLE
+    velo = Math.sqrt(velo);
+
+    LimelightHelpers.setFiducial3DOffset("elyttr",
+      0.0,
+      0.0,
+      0.0
+    );
+
+    return Math.floor(velo); //RETURNS IN METERS
+  }//CHANGE TO CALCULATE TO HUB INSTEAD OF APRIL TAG
 }

@@ -21,10 +21,11 @@ public class ClimberSubsystem extends SubsystemBase {
   
   private double climbTraj;
 
-  public ClimberSubsystem(int climbID, int climbFollowerID) {
+  public ClimberSubsystem(int climbID, int climbFollowerID) {  //climbID = 11, climbFollowerID =12.
     climb = new SparkMax(climbID, MotorType.kBrushless);
     climbFollower = new SparkMax(climbFollowerID, MotorType.kBrushless);
-    climbFollower.follow(climb);
+    //climbFollower.follow(climb);
+    climbFollower.isFollower(); //FIGURE OUT HOW TO SET FOLLOWER, MIGHT BE IN HARWARE MANAGER, THIS RIGHT HERE IS WHAT WAS DONE LAST YEAR
     climbFollower.setInverted(true);
     climbEncoder = climb.getAbsoluteEncoder();
     climbPID = new PIDController(0.1, 0.0, 0.0);
