@@ -214,7 +214,6 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     try{
-      SmartDashboard.putData("Auto Chooser", autoChooser);
       return autoChooser.getSelected();
     } catch (Exception e) {
       return null;
