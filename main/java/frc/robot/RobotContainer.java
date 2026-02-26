@@ -126,12 +126,8 @@ public class RobotContainer {
       .onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading(),m_robotDrive)); 
 
     //      LIMELIGHT
-    m_driverController.x().whileTrue(new RunCommand(() -> {m_keyX = true;}));
     m_driverController.x().whileTrue(new LimelightFrontCenterCommand(m_limelightFront, m_robotDrive, m_driverController));
-    m_driverController.x().whileFalse(new RunCommand(() -> {m_keyX = false;}));
-    m_driverController.b().whileTrue(new RunCommand(() -> {m_keyB = true;}));
    // m_driverController.b().whileTrue(new LimelightBackCenterCommand(m_limelightBack, m_robotDrive, m_driverController));
-    m_driverController.b().whileFalse(new RunCommand(() -> {m_keyB = false;}));
     
     //      launcher velocity control
     m_driverController.rightBumper()
@@ -213,10 +209,10 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    try{
+    //try{
       return autoChooser.getSelected();
-    } catch (Exception e) {
-      return null;
-    }
+    //} catch (Exception e) {
+    //  return null;
+    //}
   }
 }
