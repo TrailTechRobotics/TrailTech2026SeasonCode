@@ -75,7 +75,7 @@ public class Robot extends TimedRobot {
 //THIS MIGHT BE IMPORTANT IDK, IGNORE IF AUTONOMOUS ISNT NEEDED
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
-      //m_autonomousCommand.schedule(); //FIX THIS LATER 
+      m_autonomousCommand.schedule(); //FIX THIS LATER 
     }
   }
 
