@@ -126,6 +126,7 @@ public class LimelightSubsystem extends SubsystemBase {
     //velo = Math.abs(getLLDISTANCE()) * 12.05123 + 2491.92909;        //other way
     //velo = Math.pow(1.00304, Math.abs(getLLDISTANCE())) * 2728.86503;        //other way
     velo = (0.0919939 * Math.pow(Math.abs(d), 2)) - (13.35425 * Math.abs(d)) + 3785.72209;
+    //velo = (0.0653108 * Math.pow(Math.abs(d), 2)) - (6.10119 * Math.abs(d)) + 3390.95238;
 
     velo = /*MathUtil.clamp(velo, 0, 6000);*/(velo > 6000 ? 6000 : velo < 0 ? 0 : velo);//Math.clamp(0, 7000);
 
