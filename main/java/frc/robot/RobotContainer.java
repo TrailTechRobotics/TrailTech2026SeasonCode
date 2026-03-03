@@ -26,6 +26,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -36,6 +37,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import frc.robot.LimelightHelper;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.commands.LimelightFrontCenterCommand;
+import frc.robot.commands.LimelightFrontCenterAutoCommand;
 import frc.robot.commands.LimelightBackCenterCommand;
 import frc.robot.commands.RollerOffInstantCommand;
 import frc.robot.commands.RollerOnInstantCommand;
@@ -49,6 +51,7 @@ import frc.robot.subsystems.ChuteSubsystem;
 import frc.robot.commands.SlideInCommand;
 import frc.robot.commands.SlideOutCommand;
 import frc.robot.commands.FullOuttakeCommand;
+import frc.robot.commands.FullOuttakeOnCommand;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -70,10 +73,10 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();  
   private final LimelightSubsystem m_limelightFront = new LimelightSubsystem("limelight-elyttr");
-  //private final LimelightSubsystem m_limelightBack = new LimelightSubsystem("limelight-elyttrb");
+  private final LimelightSubsystem m_limelightBack = new LimelightSubsystem("limelight-elyttrb");
   private final FuelgrabberSubsystem m_fuelgrabber = new FuelgrabberSubsystem(9, 1, 10);
   private final LauncherSubsystem m_launcher = new LauncherSubsystem(11, 12); // changed LauncherSubsystem to ChuteSubsystem.   fix canIDs
-  private final ClimberSubsystem m_climber = new ClimberSubsystem(22, 33);
+  //private final ClimberSubsystem m_climber = new ClimberSubsystem(22, 33);
   private final ChuteSubsystem m_chute = new ChuteSubsystem(3);
 //UNCOMMENT THESE FOR THE BACK LIMELIGHT, FUELGRABBER STUFF, LAUNCHER STUFF, AND CLIMBER STUFF !!!IMPORTANT!!!
   
@@ -82,7 +85,7 @@ public class RobotContainer {
   private boolean m_keyX = false;
   private boolean m_keyB = false;
 
-  private int launcherVelo = 5500;
+  private int launcherVelo = 4400;
   /**path
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -92,6 +95,11 @@ public class RobotContainer {
     NamedCommands.registerCommand("RollerOn", new RollerOnInstantCommand(m_fuelgrabber));
     NamedCommands.registerCommand("SlideIn", new SlideInCommand(m_fuelgrabber));
     NamedCommands.registerCommand("SlideOut", new SlideOutCommand(m_fuelgrabber));
+    NamedCommands.registerCommand("FullOuttakeOn", new FullOuttakeOnCommand(
+      m_fuelgrabber, m_chute, m_launcher,
+      -4500, 1, m_limelightFront//, launcherVelo
+    ));
+    NamedCommands.registerCommand("LimelightFrontCenter", new LimelightFrontCenterAutoCommand(m_limelightFront, m_robotDrive));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -105,7 +113,7 @@ public class RobotContainer {
                 -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
                 -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
-                true),  //FIELD RELATIVE 
+                false),  //FIELD RELATIVE 
             m_robotDrive));
 
     //m_launcher.setDefaultCommand(new RunCommand(() -> {m_launcher.setSpeed(0.0);}, m_launcher);
@@ -118,20 +126,29 @@ public class RobotContainer {
     //***autoChooser.setDefaultOption("Default Auto", kDefaultAuto);
     //***autoChooser.addOption("My Auto", "Test Auto 1.auto");
     SmartDashboard.putData("Auto Chooser", autoChooser);
+
+    //SmartDashboard.putNumber("LAUNCHER VELOCITY", launcherVelo);
+    //launcherVelo = SmartDashboard.getNumber("LAUNCHER VELOCITY");
   }
 
   private void configureButtonBindings() {
     //      RESET HEADINGS
-    m_driverController.povDown().whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
-      .onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading(),m_robotDrive)); 
+    //m_driverController.povDown().whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
+    //  .onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading(),m_robotDrive)); 
 
     //      LIMELIGHT
-    m_driverController.x().whileTrue(new LimelightFrontCenterCommand(m_limelightFront, m_robotDrive, m_driverController));
+    m_driverController.a().whileTrue(new LimelightFrontCenterCommand(m_limelightFront, m_robotDrive, m_driverController));
    // m_driverController.b().whileTrue(new LimelightBackCenterCommand(m_limelightBack, m_robotDrive, m_driverController));
     
     //      launcher velocity control
     m_driverController.rightBumper()
-    .whileTrue(new RunCommand(() -> m_launcher.setVelocity(4200), m_launcher))  
+    .whileTrue(new RunCommand(() -> m_launcher.setVelocityByVelo(), m_launcher))//m_launcher.setVelocity(4200), m_launcher))  
+    .onFalse(new InstantCommand(() -> m_launcher.stop(), m_launcher));
+    m_driverController.x()                                                //-0.646 for offset below if needed
+    //.onTrue(new InstantCommand(() -> m_limelightFront.setLLOFFSET(0.508, 0, 0))) //APRIL TAG OFFSET FOR SHOOTING     BACK THEN SIDE THEN DOWN
+    .whileTrue(new RunCommand(() -> {
+      m_launcher.setVelocity(m_limelightFront.CALCULATESHOOTVELO());
+    }, m_launcher))
     .onFalse(new InstantCommand(() -> m_launcher.stop(), m_launcher));
 
     //      intake forward
@@ -145,10 +162,10 @@ public class RobotContainer {
     .onFalse(new InstantCommand(() -> {m_fuelgrabber.stopRoller();}));
 
     //      Extend slide (Y)
-    m_driverController.y().whileTrue(new SlideOutCommand(m_fuelgrabber));
+    m_driverController.povUp().whileTrue(new SlideOutCommand(m_fuelgrabber));
 
     //      Retract slide (A)
-    m_driverController.a().whileTrue(new SlideInCommand(m_fuelgrabber));
+    m_driverController.povDown().whileTrue(new SlideInCommand(m_fuelgrabber));
     
     //chute empty to launcher
     m_driverController.leftBumper()
@@ -161,14 +178,27 @@ public class RobotContainer {
     .onFalse(new InstantCommand(() -> {m_fuelgrabber.stopScooper();}));
 
     //      FULL OUTTAKE
-    m_driverController.povUp().whileTrue(new FullOuttakeCommand(
+    /*m_driverController.y().whileTrue(new FullOuttakeCommand(
       m_fuelgrabber, m_chute, m_launcher,
-      -4500, 1, launcherVelo
+      -4500, 1, m_limelightFront//, launcherVelo
+    ));*/
+    m_driverController.y().whileTrue(Commands.startEnd(
+      () -> {
+        m_fuelgrabber.setScooperVelocity(-4500);
+        m_chute.setChuteSpeed(1);
+        m_launcher.setVelocity(m_limelightFront.CALCULATESHOOTVELO());
+      },
+      () -> {
+        m_fuelgrabber.stopScooper();
+        m_chute.setChuteSpeed(0);
+        m_launcher.stop();
+      },
+      m_launcher, m_fuelgrabber, m_chute, m_limelightFront
     ));
 
-    //      FULL OUTTAKE SPEEDS
-    m_driverController.povLeft().whileTrue(new RunCommand(() -> {launcherVelo -= (launcherVelo - 20) > 3000 ? 20 : 0;}));
-    m_driverController.povRight().whileTrue(new RunCommand(() -> {launcherVelo += (launcherVelo + 20) < 6000 ? 20 : 0;}));
+    //      OUTTAKE SPEEDS
+    m_driverController.povLeft().whileTrue(new RunCommand(() -> {m_launcher.setVelo(true);}));
+    m_driverController.povRight().whileTrue(new RunCommand(() -> {m_launcher.setVelo(false);}));
   }  
 /*
               BUTTON BINDINGS (OUTDATED)

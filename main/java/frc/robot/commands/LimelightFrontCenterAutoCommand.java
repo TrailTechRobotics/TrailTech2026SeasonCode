@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+//import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -20,10 +20,10 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class LimelightFrontCenterCommand extends Command {
+public class LimelightFrontCenterAutoCommand extends Command {
   private final LimelightSubsystem ll;
   private final DriveSubsystem m_drive;
-  private final CommandXboxController m_controller;
+  //private final CommandXboxController m_controller;
 
   private final PIDController pidR = new PIDController(0.01, 0, 0.0008);//0.015, 0, 0.0001
   private final PIDController pidX = new PIDController(0.06, 0, 0.0);
@@ -35,10 +35,10 @@ public class LimelightFrontCenterCommand extends Command {
   private final double MAX_ROT = 2.5;
   private final double MAX_MOVE = 1.5;
 
-  public LimelightFrontCenterCommand(LimelightSubsystem ll, DriveSubsystem m_drive, CommandXboxController m_controller) {
+  public LimelightFrontCenterAutoCommand(LimelightSubsystem ll, DriveSubsystem m_drive) {
     this.ll = ll;
     this.m_drive = m_drive;
-    this.m_controller = m_controller;
+    //this.m_controller = m_controller;
     addRequirements(m_drive);
 
     pidR.setTolerance(0.5);
@@ -88,10 +88,7 @@ public class LimelightFrontCenterCommand extends Command {
    // SmartDashboard.putNumber("YSPEED: ", ySpeed);
 
     
-    m_drive.drive(
-      MathUtil.applyDeadband(m_controller.getLeftY(), OIConstants.kDriveDeadband), 
-      MathUtil.applyDeadband(m_controller.getLeftX(), OIConstants.kDriveDeadband), 
-      -rot, false); //yspeed xspeed
+    m_drive.drive(0, 0, -rot, false); //yspeed xspeed
   }
 
   @Override

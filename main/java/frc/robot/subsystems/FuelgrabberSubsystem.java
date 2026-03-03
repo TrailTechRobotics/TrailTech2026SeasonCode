@@ -51,8 +51,8 @@ public class FuelgrabberSubsystem extends SubsystemBase {
     slideEncoder.setPosition(0.0); // zero on boot (or after homing)
 
     // PID: P only for now
-    slidePID = new PIDController(0.03, 0.0, 0.0);
-    slidePID.setTolerance(0.05); // motor rotations
+    slidePID = new PIDController(0.02, 0.0, 0);
+    slidePID.setTolerance(0.1); // motor rotations
 
     slideTraj = 0.0;
 
@@ -90,7 +90,8 @@ public class FuelgrabberSubsystem extends SubsystemBase {
   }
 
   public boolean slideAtTraj() {
-    return slidePID.atSetpoint();
+    //return slidePID.atSetpoint();
+    return Math.abs(slideEncoder.getPosition() - slideTraj) < 0.15;
   }
 
   public void zeroSlideEncoder() {

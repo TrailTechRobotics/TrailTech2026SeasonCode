@@ -10,8 +10,9 @@ import frc.robot.subsystems.ChuteSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
+
 //You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class FullOuttakeCommand extends Command {
+public class FullOuttakeOnCommand extends Command {
   private FuelgrabberSubsystem fuelGrabber;
   private ChuteSubsystem chute;
   private LauncherSubsystem launcher;
@@ -22,7 +23,9 @@ public class FullOuttakeCommand extends Command {
 
   private LimelightSubsystem m_limelightFront;
 
-  public FullOuttakeCommand(FuelgrabberSubsystem fuelGrabber, ChuteSubsystem chute, LauncherSubsystem launcher, int scooperVelo, int chuteSpeed, LimelightSubsystem m_limelightFront/* , int launcherVelo*/) {
+ // private int time;
+
+  public FullOuttakeOnCommand(FuelgrabberSubsystem fuelGrabber, ChuteSubsystem chute, LauncherSubsystem launcher, int scooperVelo, int chuteSpeed, LimelightSubsystem m_limelightFront/* , int launcherVelo*/) {
     this.fuelGrabber = fuelGrabber;
     this.chute = chute;
     this.launcher = launcher;
@@ -32,20 +35,22 @@ public class FullOuttakeCommand extends Command {
     this.scooperVelo = scooperVelo;
     this.chuteSpeed = chuteSpeed;
     //this.launcherVelo = launcherVelo;
-
     this.m_limelightFront = m_limelightFront;
+
+    //time = 0;
   }
 
   @Override
-  public void initialize() {
+  public void initialize() {}
+
+  @Override
+  public void execute() {
     fuelGrabber.setScooperVelocity(scooperVelo);
     chute.setChuteSpeed(chuteSpeed);
     //launcher.setVelocity(launcherVelo);
     launcher.setVelocity(m_limelightFront.CALCULATESHOOTVELO());
+    //time++;
   }
-
-  @Override
-  public void execute() {}
 
   @Override
   public void end(boolean interrupted) {

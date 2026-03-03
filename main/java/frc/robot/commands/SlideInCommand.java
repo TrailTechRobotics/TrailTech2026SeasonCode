@@ -16,7 +16,7 @@ public class SlideInCommand extends Command {
   public SlideInCommand(FuelgrabberSubsystem fuelGrabber) {
     this.fuelGrabber = fuelGrabber;
     addRequirements(fuelGrabber);
-    inPos = 4.0; // POSTIION OF BALGRABER WHNE THING IS OUT
+    inPos = -4.0; // POSTIION OF BALGRABER WHNE THING IS OUT
   }
 
   
