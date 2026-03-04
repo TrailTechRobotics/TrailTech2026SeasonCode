@@ -131,7 +131,7 @@ public class LimelightSubsystem extends SubsystemBase {
     velo = /*MathUtil.clamp(velo, 0, 6000);*/(velo > 6000 ? 6000 : velo < 0 ? 0 : velo);//Math.clamp(0, 7000);
 
     int veloInt = (int) Math.floor(velo); 
-    veloInt = (veloInt > lastVelo + 20 && veloInt < lastVelo + 100 ? lastVelo : veloInt < lastVelo - 20 && veloInt > lastVelo - 100 ? lastVelo : veloInt);
+    veloInt = (veloInt > lastVelo + 5 && veloInt < lastVelo + 80 ? lastVelo : veloInt < lastVelo - 5 && veloInt > lastVelo - 80 ? lastVelo : veloInt);
 
     SmartDashboard.putNumber("RPM", veloInt);
   
