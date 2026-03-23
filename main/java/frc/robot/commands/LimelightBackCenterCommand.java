@@ -25,7 +25,7 @@ public class LimelightBackCenterCommand extends Command {
   private final DriveSubsystem m_drive;
   private final CommandXboxController m_controller;
 
-  private final PIDController pidR = new PIDController(0.015, 0, 0.001);
+  private final PIDController pidR = new PIDController(0.01, 0, 0.0008);//0.015, 0, 0.0001
   private final PIDController pidX = new PIDController(0.06, 0, 0.0);
   private final PIDController pidY = new PIDController(0.7, 0, 0.0);
 
@@ -87,7 +87,10 @@ public class LimelightBackCenterCommand extends Command {
    // SmartDashboard.putNumber("XSPEED: ", xSpeed);
    // SmartDashboard.putNumber("YSPEED: ", ySpeed);
 
-    m_drive.drive(-ySpeed, -xSpeed, -rot, true);
+    m_drive.drive(
+      -MathUtil.applyDeadband(m_controller.getLeftY(), OIConstants.kDriveDeadband), 
+      -MathUtil.applyDeadband(m_controller.getLeftX(), OIConstants.kDriveDeadband), 
+      rot, false);
   }
 
   @Override
@@ -97,6 +100,6 @@ public class LimelightBackCenterCommand extends Command {
 
   @Override
   public boolean isFinished() {
-    return (pidR.atSetpoint() && Math.abs(ll.getLLTA() - FINAL_A) < 0.15);
+    return (pidR.atSetpoint()/*  && Math.abs(ll.getLLTA() - FINAL_A) < 0.15*/);
   }
 }

@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
@@ -52,6 +53,8 @@ import frc.robot.commands.SlideInCommand;
 import frc.robot.commands.SlideOutCommand;
 import frc.robot.commands.FullOuttakeCommand;
 import frc.robot.commands.FullOuttakeOnCommand;
+import frc.robot.commands.FullOuttakeOnVeloCommand;
+import frc.robot.commands.auto1;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -74,13 +77,23 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();  
   private final LimelightSubsystem m_limelightFront = new LimelightSubsystem("limelight-elyttr");
   private final LimelightSubsystem m_limelightBack = new LimelightSubsystem("limelight-elyttrb");
-  private final FuelgrabberSubsystem m_fuelgrabber = new FuelgrabberSubsystem(9, 1, 10);
+  private final FuelgrabberSubsystem m_fuelgrabber = new FuelgrabberSubsystem(9, 10, 1);
   private final LauncherSubsystem m_launcher = new LauncherSubsystem(11, 12); // changed LauncherSubsystem to ChuteSubsystem.   fix canIDs
   //private final ClimberSubsystem m_climber = new ClimberSubsystem(22, 33);
   private final ChuteSubsystem m_chute = new ChuteSubsystem(3);
 //UNCOMMENT THESE FOR THE BACK LIMELIGHT, FUELGRABBER STUFF, LAUNCHER STUFF, AND CLIMBER STUFF !!!IMPORTANT!!!
-  
-  CommandXboxController m_driverController = new CommandXboxController(OIConstants.kDriverControllerPort);
+
+
+ // Primary driver controller on port 0
+ private final CommandXboxController m_driverController = 
+ new CommandXboxController(OIConstants.kDriverControllerPort); // Typically port 0
+
+ // Secondary driver controller on port 1
+ private final CommandXboxController m_driverController2 = 
+ new CommandXboxController(1); // Set port 1 for secondary controller
+
+
+
 
   private boolean m_keyX = false;
   private boolean m_keyB = false;
@@ -90,7 +103,11 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    //NAMED COMMAND
+    //Camera Offsets
+    m_limelightBack.setLLOFFSET(0,0,0);
+    m_limelightFront.setLLOFFSET(-0.597,0,0);
+
+    //NAMED COMMANDS
     NamedCommands.registerCommand("RollerOff", new RollerOffInstantCommand(m_fuelgrabber));
     NamedCommands.registerCommand("RollerOn", new RollerOnInstantCommand(m_fuelgrabber));
     NamedCommands.registerCommand("SlideIn", new SlideInCommand(m_fuelgrabber));
@@ -100,6 +117,11 @@ public class RobotContainer {
       -4500, 1, m_limelightFront//, launcherVelo
     ));
     NamedCommands.registerCommand("LimelightFrontCenter", new LimelightFrontCenterAutoCommand(m_limelightFront, m_robotDrive));
+    NamedCommands.registerCommand("FullOuttakeOnVelo", new FullOuttakeOnVeloCommand(
+      m_fuelgrabber, m_chute, m_launcher,
+      -4500, 1, 4000
+    ));
+
 
     // Configure the button bindings
     configureButtonBindings();
@@ -133,23 +155,25 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     //      RESET HEADINGS
-    //m_driverController.povDown().whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
-    //  .onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading(),m_robotDrive)); 
+    m_driverController.start().whileTrue(new RunCommand(() -> m_robotDrive.setX(), m_robotDrive))
+      .onTrue(new InstantCommand(() -> m_robotDrive.zeroHeading(),m_robotDrive)); 
 
     //      LIMELIGHT
-    m_driverController.a().whileTrue(new LimelightFrontCenterCommand(m_limelightFront, m_robotDrive, m_driverController));
-   // m_driverController.b().whileTrue(new LimelightBackCenterCommand(m_limelightBack, m_robotDrive, m_driverController));
+    m_driverController.a().whileTrue(new LimelightFrontCenterCommand(m_limelightFront, m_limelightBack, m_robotDrive, m_driverController));
+    m_driverController2.povDown().whileTrue(new LimelightFrontCenterCommand(m_limelightFront, m_limelightBack, m_robotDrive, m_driverController));
+    // m_driverController.b().whileTrue(new LimelightBackCenterCommand(m_limelightBack, m_robotDrive, m_driverController));
+    //m_driverController.x().whileTrue(new LimelightBackCenterCommand(m_limelightBack, m_robotDrive, m_driverController));
     
     //      launcher velocity control
-    m_driverController.rightBumper()
+    m_driverController2.rightTrigger(0.3)
     .whileTrue(new RunCommand(() -> m_launcher.setVelocityByVelo(), m_launcher))//m_launcher.setVelocity(4200), m_launcher))  
     .onFalse(new InstantCommand(() -> m_launcher.stop(), m_launcher));
-    m_driverController.x()                                                //-0.646 for offset below if needed
+    /*m_driverController.x()                                              //-0.646 for offset below if needed
     //.onTrue(new InstantCommand(() -> m_limelightFront.setLLOFFSET(0.508, 0, 0))) //APRIL TAG OFFSET FOR SHOOTING     BACK THEN SIDE THEN DOWN
     .whileTrue(new RunCommand(() -> {
       m_launcher.setVelocity(m_limelightFront.CALCULATESHOOTVELO());
     }, m_launcher))
-    .onFalse(new InstantCommand(() -> m_launcher.stop(), m_launcher));
+    .onFalse(new InstantCommand(() -> m_launcher.stop(), m_launcher));*/
 
     //      intake forward
     m_driverController.rightTrigger(0.3)
@@ -161,32 +185,70 @@ public class RobotContainer {
     .whileTrue(new RunCommand(() -> {m_fuelgrabber.setRollerVelocity(2800);}))
     .onFalse(new InstantCommand(() -> {m_fuelgrabber.stopRoller();}));
 
-    //      Extend slide (Y)
+    //      Extend slide
     m_driverController.povUp().whileTrue(new SlideOutCommand(m_fuelgrabber));
 
-    //      Retract slide (A)
+    //      Retract slide
     m_driverController.povDown().whileTrue(new SlideInCommand(m_fuelgrabber));
     
     //chute empty to launcher
-    m_driverController.leftBumper()
-    .whileTrue(new RunCommand(() -> {m_chute.setChuteSpeed(1);}))
-    .onFalse(new InstantCommand(() -> {m_chute.setChuteSpeed(0);}));
+    /*m_driverController.leftBumper()
+    .whileTrue(new RunCommand(() -> {
+      m_chute.setChuteSpeed(1);
+      m_fuelgrabber.setScooperVelocity(-4500);
+    }))
+    .onFalse(new InstantCommand(() -> {
+      m_chute.setChuteSpeed(0);
+      m_fuelgrabber.stopScooper();
+    }));*/
+
+    m_driverController2.a().whileTrue(Commands.startEnd(
+      () -> {
+        m_fuelgrabber.setScooperVelocity(-4500);
+        m_chute.setChuteSpeed(1);
+        m_launcher.setVelocityByVelo();
+      },
+      () -> {
+        m_fuelgrabber.stopScooper();
+        m_chute.setChuteSpeed(0);
+        m_launcher.stop();
+      },
+      m_launcher, m_fuelgrabber, m_chute
+    ));
 
     //hopper empty to chute
-    m_driverController.b()
-    .whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperVelocity(-4500);}))
+    m_driverController2.b()
+    .whileTrue(new RunCommand(() -> {
+      m_fuelgrabber.setScooperVelocity(-4500);
+    }))
+    .onFalse(new InstantCommand(() -> {
+      m_fuelgrabber.stopScooper();
+    }));
+    m_driverController2.y()
+    .whileTrue(new RunCommand(() -> {m_fuelgrabber.setScooperVelocity(4500);}))
     .onFalse(new InstantCommand(() -> {m_fuelgrabber.stopScooper();}));
+
+    m_driverController2.leftTrigger(0.3)
+    .whileTrue(new RunCommand(() -> {m_chute.setChuteSpeed(1);}))
+    .onFalse(new InstantCommand(() -> {m_chute.setChuteSpeed(0);;}));
+
+
+
+
 
     //      FULL OUTTAKE
     /*m_driverController.y().whileTrue(new FullOuttakeCommand(
       m_fuelgrabber, m_chute, m_launcher,
       -4500, 1, m_limelightFront//, launcherVelo
     ));*/
-    m_driverController.y().whileTrue(Commands.startEnd(
+    m_driverController2.x().whileTrue(Commands.startEnd(
       () -> {
         m_fuelgrabber.setScooperVelocity(-4500);
         m_chute.setChuteSpeed(1);
-        m_launcher.setVelocity(m_limelightFront.CALCULATESHOOTVELO());
+        m_launcher.setVelocity(
+          (m_limelightFront.getLLTV() && m_limelightBack.getLLTV()) ? (m_limelightFront.CALCULATESHOOTVELO() + m_limelightBack.CALCULATESHOOTVELO()) / 2
+          : (m_limelightFront.getLLTV() ? m_limelightFront.CALCULATESHOOTVELO() : m_limelightBack.CALCULATESHOOTVELO())
+        );
       },
       () -> {
         m_fuelgrabber.stopScooper();
@@ -197,8 +259,15 @@ public class RobotContainer {
     ));
 
     //      OUTTAKE SPEEDS
-    m_driverController.povLeft().whileTrue(new RunCommand(() -> {m_launcher.setVelo(true);}));
-    m_driverController.povRight().whileTrue(new RunCommand(() -> {m_launcher.setVelo(false);}));
+    m_driverController2.povLeft().whileTrue(new RunCommand(() -> {m_launcher.setVelo(true);}));
+    m_driverController2.povRight().whileTrue(new RunCommand(() -> {m_launcher.setVelo(false);}));
+
+    //Preset Speeds --CHANGE LATER--
+    m_driverController2.leftBumper().whileTrue(new RunCommand(() -> {m_launcher.setSetVelo(4000);}));
+    m_driverController2.rightBumper().whileTrue(new RunCommand(() -> {m_launcher.setSetVelo(4500);}));
+    m_driverController2.povUp().whileTrue(new RunCommand(() -> {m_launcher.setSetVelo(5000);}));
+    m_driverController2.leftStick().whileTrue(new RunCommand(() -> {m_launcher.setSetVelo(5500);}));
+    m_driverController2.rightStick().whileTrue(new RunCommand(() -> {m_launcher.setSetVelo(3500);}));
   }  
 /*
               BUTTON BINDINGS (OUTDATED)
@@ -206,9 +275,9 @@ public class RobotContainer {
       L3 : Nothing
       R3 : Nothing
       
-      Left Bumper : Fuelgrabber Scooper Out  (Pulls fuel off ground)
-      Right Bumper : Fuelgrabber Scooper In
-      POV Left : Fuelgrabber Out    (Full piece that have the "Scooper")
+      Pov Up : Intake Body Out
+      Pov Down : Intake Body In
+      POV Left : 
       POV Right : Fuelgrabber In
       A : Intake Retract   (Thing to move fuel after scooper picks em up)    (as in roller pin like the kitchen tool cause it looked like that on cad)
       Y : Intake Extend
@@ -240,7 +309,12 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     //try{
-      return autoChooser.getSelected();
+      //return autoChooser.getSelected();  
+      //SlideInCommand autoslidein = new SlideInCommand(m_fuelgrabber);
+      //FullOuttakeOnVeloCommand autoshoot = new FullOuttakeOnVeloCommand(m_fuelgrabber, m_chute, m_launcher,
+      //-4500, 1, 4000);
+      auto1 auto = new auto1(m_fuelgrabber, m_chute, m_launcher);
+      return auto;
     //} catch (Exception e) {
     //  return null;
     //}

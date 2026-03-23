@@ -1,0 +1,35 @@
+        ***PRECOMP***
+Exposure -> 12
+Resolution -> 1280x800
+Frame Rate -> 60
+Black Level Offset -> 0
+Sensor Gain -> 15
+Flicker Correction -> 60
+Detector Downscale -> 2
+Quality Threshold -> 2
+
+        ***PRACTICE FIELD***   ????
+Exposure -> 
+Resolution ->
+Frame Rate ->
+Black Level Offset -> 
+Sensor Gain ->
+Flicker Correction ->
+Detector Downscale ->
+Quality Threshold ->
+
+        ***COMP FIELD***   ????
+Exposure -> 645
+Resolution -> 
+Frame Rate -> 
+Black Level Offset -> 0
+Sensor Gain -> 1.5
+Flicker Correction -> 
+Detector Downscale -> 
+Quality Threshold -> 
+Blue -> 1975
+lc gain -> 145
+red -> 1200
+
+        ***ID FILTERS***
+April Tag -> 12,1,7,6,17,28,22,23,2,10,5,26,18,21,13,29

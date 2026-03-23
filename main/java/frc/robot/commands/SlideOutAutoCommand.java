@@ -8,30 +8,26 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.FuelgrabberSubsystem;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class SlideInCommand extends Command {
+public class SlideOutAutoCommand extends Command {
   private FuelgrabberSubsystem fuelGrabber;
   
-  private double inPos;
-  private int i;
+  private double outPos;
 
-  public SlideInCommand(FuelgrabberSubsystem fuelGrabber) {
+  public SlideOutAutoCommand(FuelgrabberSubsystem fuelGrabber) {
     this.fuelGrabber = fuelGrabber;
     addRequirements(fuelGrabber);
-    inPos = -4.0; // POSTIION OF BALGRABER WHNE THING IS OUT
-    i = 0;
+    outPos = 20.0; // POSTIION OF BALGRABER WHNE THING IS OUT
   }
 
   
   @Override
   public void initialize() {
-    fuelGrabber.setSlideTraj(inPos);
+    fuelGrabber.setSlideTraj(outPos);
   }
 
   
   @Override
-  public void execute() {
-    i++;
-  }
+  public void execute() {}
 
  
   @Override
@@ -40,6 +36,7 @@ public class SlideInCommand extends Command {
  
   @Override
   public boolean isFinished() {
-    return fuelGrabber.slideAtTraj();
+    //return fuelGrabber.slideAtTraj();
+    return true;
   }
 }

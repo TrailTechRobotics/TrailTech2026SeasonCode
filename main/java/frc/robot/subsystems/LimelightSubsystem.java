@@ -24,7 +24,8 @@ public class LimelightSubsystem extends SubsystemBase {
   private String ll;
   //Shuffleboard shuffle = new Shuffleboard();
 
-  private int lastVelo;
+  //private int lastVelo;
+  public static int lastVelo = 0;
   private int dt;
 
   //private ArrayList<Double> tyAverage;
@@ -32,13 +33,13 @@ public class LimelightSubsystem extends SubsystemBase {
   public LimelightSubsystem(String ll) {
     this.ll = ll;
 
-    LimelightHelpers.setFiducial3DOffset(ll,
+    /*LimelightHelpers.setFiducial3DOffset(ll,
       -0.597,
       0, //OFFSET ON ROBOT
       0
-    );
+    );*/
 
-    lastVelo = 0;
+    //lastVelo = 0;
     dt = 0;
   }
 
@@ -55,7 +56,8 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public double getLLTY() {
-    return NetworkTableInstance.getDefault().getTable(ll).getEntry("ty").getDouble(0);
+    double a = NetworkTableInstance.getDefault().getTable(ll).getEntry("ty").getDouble(0);
+    return (-0.00655848 * (Math.pow(a, 2))) + 1.17482 * (a) - 2.77455;
   }
 
   public double getLLTA() {
@@ -89,15 +91,24 @@ public class LimelightSubsystem extends SubsystemBase {
     }
     av /= tyAverage.size();*/
     
-    double h1 = 18.7; //LENS HEIGHT IN INCHES
+    /*double h1 = 18.7; //LENS HEIGHT IN INCHES
     double h2 = 44.25; //APRIL TAG HEIGHT IN INCHES
-    double a = -(Math.toRadians(getLLTY() + 1.5));//ROTATION FIX
+    double a = -(Math.toRadians(getLLTY()));//ROTATION FIX
     a = Math.tan(a);
     if (Math.abs(a) < 0.001) {
       return 0;
     }
-    double d = (h2 - h1) / a;
+    double d = (h2 - h1) / a;*/
 
+    double h1 = 20.5;
+    double h2 = 44.25;
+    double w = 20.4;
+    double wh = w/2;
+    double a = Math.abs(Math.toRadians(getLLTX()));
+    double ct = h2 - h1;
+    double st = wh * Math.tan(a);
+    double am = Math.asin(ct/st);
+    double d = Math.cos(am) * st;
     SmartDashboard.putNumber("LIMELIGHT DISTANCE", d);
     return d; //RETURNS IN INCHES
   }
@@ -125,8 +136,9 @@ public class LimelightSubsystem extends SubsystemBase {
 
     //velo = Math.abs(getLLDISTANCE()) * 12.05123 + 2491.92909;        //other way
     //velo = Math.pow(1.00304, Math.abs(getLLDISTANCE())) * 2728.86503;        //other way
-    velo = (0.0919939 * Math.pow(Math.abs(d), 2)) - (13.35425 * Math.abs(d)) + 3785.72209;
+    //velo = (0.0919939 * Math.pow(Math.abs(d), 2)) - (13.35425 * Math.abs(d)) + 3785.72209;
     //velo = (0.0653108 * Math.pow(Math.abs(d), 2)) - (6.10119 * Math.abs(d)) + 3390.95238;
+    velo = (0.0719246 * Math.pow(Math.abs(d), 2)) - (7.52976 * Math.abs(d)) + 3461.42857;
 
     velo = /*MathUtil.clamp(velo, 0, 6000);*/(velo > 6000 ? 6000 : velo < 0 ? 0 : velo);//Math.clamp(0, 7000);
 

@@ -38,7 +38,7 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 0.2;   //@SPEED
+    public static final double kMaxSpeedMetersPerSecond = 0.5;   //@SPEED
     public static final double kMaxAngularSpeed = 1 * Math.PI; // radians per second
 
     // Chassis configuration
@@ -59,7 +59,7 @@ public final class Constants {
     public static final double kBackRightChassisAngularOffset = Math.PI / 2;
 
     // SPARK MAX CAN IDs
-    public static final int kFrontLeftDrivingCanId = 14;  //CAN PULL FROM SPARK MAXES RIGHT AWAY @ELEC
+    public static final int kFrontLeftDrivingCanId = 14;  
     public static final int kRearLeftDrivingCanId = 17;
     public static final int kFrontRightDrivingCanId = 15;
     public static final int kRearRightDrivingCanId = 16;
@@ -95,8 +95,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;  //ADJUST IF WE DO AUTO
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxSpeedMetersPerSecond = 0.5;  //ADJUST IF WE DO AUTO
+    public static final double kMaxAccelerationMetersPerSecondSquared = 0.5;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
@@ -109,7 +109,7 @@ public final class Constants {
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
     public static final PIDConstants TRANSLATION_PID = new PIDConstants(1.3, 0, 0);
-    public static final PIDConstants ANGLE_PID = new PIDConstants(.01, 0, 0);
+    public static final PIDConstants ANGLE_PID = new PIDConstants(.002, 0, 0);//0.01
 
     public static final PathFollowingController AUTON_CONTROLLER = new PPHolonomicDriveController(
         TRANSLATION_PID, // new PIDConstants(5, 0.0, 0.0), // Translation PID constants

@@ -22,6 +22,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class LimelightFrontCenterCommand extends Command {
   private final LimelightSubsystem ll;
+  private final LimelightSubsystem ll2;
   private final DriveSubsystem m_drive;
   private final CommandXboxController m_controller;
 
@@ -35,8 +36,9 @@ public class LimelightFrontCenterCommand extends Command {
   private final double MAX_ROT = 2.5;
   private final double MAX_MOVE = 1.5;
 
-  public LimelightFrontCenterCommand(LimelightSubsystem ll, DriveSubsystem m_drive, CommandXboxController m_controller) {
+  public LimelightFrontCenterCommand(LimelightSubsystem ll, LimelightSubsystem ll2, DriveSubsystem m_drive, CommandXboxController m_controller) {
     this.ll = ll;
+    this.ll2 = ll2;
     this.m_drive = m_drive;
     this.m_controller = m_controller;
     addRequirements(m_drive);
@@ -54,39 +56,67 @@ public class LimelightFrontCenterCommand extends Command {
   public void execute() {
     double rot = 0.0;
     double tx = ll.getLLTX();
+    double tx2 = ll2.getLLTX();
 
     double xSpeed = 0.0;
     double ySpeed = 0.0;
     double ty = ll.getLLTY();
+    double ty2 = ll2.getLLTY();
     double ta = ll.getLLTA();
+    double ta2 = ll2.getLLTA();
 
-    if (ll.getLLTV()) {
+    boolean tv = ll.getLLTV();
+    boolean tv2 = ll2.getLLTV();
+
+    if (tv && tv2) {
+      double a1 = 90 - tx2;
+      double a2 = 90 - (Math.abs(tx));
+      double a3 = 180 - (a1 + a2);
+      double s1 = 20.4; //distance between cameras
+      double s2 = (s1 / Math.sin(Math.toRadians(a3))) * Math.sin(Math.toRadians(a1));
+      double m = Math.sqrt((Math.pow(s1/2, 2) + Math.pow(s2, 2)) - s1 * s2 * Math.cos(Math.toRadians(a2)));
+      double am = Math.asin((Math.sin(Math.toRadians(a2)) * s2) / m);
+
+      rot = pidR.calculate(am - 90, FINAL_TX);
+      if (Math.abs(tx) < 3.0) {
+        rot = 0;
+      }
+      rot = MathUtil.clamp(rot, -MAX_ROT, MAX_ROT);
+
+      SmartDashboard.putNumber("AM: ", am - 90);
+    } else if (tv) {
       rot = pidR.calculate(tx, FINAL_TX);
-      xSpeed = pidX.calculate(tx, FINAL_TX);
-      ySpeed = pidY.calculate(ta, FINAL_A);
+      //xSpeed = pidX.calculate(tx, FINAL_TX);
+      //ySpeed = pidY.calculate(ta, FINAL_A);
       
-      double scale = MathUtil.clamp(1.0-Math.abs(tx) / 25.0, 0.0, 1.0);
-      xSpeed *= scale;
-      ySpeed *= scale;
+      //double scale = MathUtil.clamp(1.0-Math.abs(tx) / 25.0, 0.0, 1.0);
+      //xSpeed *= scale;
+      //ySpeed *= scale;
 
       if (Math.abs(tx) < 3.0) {
         rot = 0;
       }
-      if (Math.abs(xSpeed) > 0.02) {
-        xSpeed += Math.copySign(0.05, xSpeed);
-      }
-      if (Math.abs(ySpeed) > 0.02) {
-        ySpeed += Math.copySign(0.05, ySpeed);
+      //if (Math.abs(xSpeed) > 0.02) {
+      //  xSpeed += Math.copySign(0.05, xSpeed);
+      //}
+      //if (Math.abs(ySpeed) > 0.02) {
+      //  ySpeed += Math.copySign(0.05, ySpeed);
+      //}
+      rot = MathUtil.clamp(rot, -MAX_ROT, MAX_ROT);
+      //xSpeed = MathUtil.clamp(xSpeed, -MAX_MOVE, MAX_MOVE);
+      //ySpeed = MathUtil.clamp(ySpeed, -MAX_MOVE, MAX_MOVE);
+    } else if (tv2) {
+      rot = pidR.calculate(tx, FINAL_TX);
+      if (Math.abs(tx) < 3.0) {
+        rot = 0;
       }
       rot = MathUtil.clamp(rot, -MAX_ROT, MAX_ROT);
-      xSpeed = MathUtil.clamp(xSpeed, -MAX_MOVE, MAX_MOVE);
-      ySpeed = MathUtil.clamp(ySpeed, -MAX_MOVE, MAX_MOVE);
     }
 
    // SmartDashboard.putNumber("Rot: ", rot);
    // SmartDashboard.putNumber("XSPEED: ", xSpeed);
    // SmartDashboard.putNumber("YSPEED: ", ySpeed);
-
+    
     
     m_drive.drive(
       MathUtil.applyDeadband(m_controller.getLeftY(), OIConstants.kDriveDeadband), 

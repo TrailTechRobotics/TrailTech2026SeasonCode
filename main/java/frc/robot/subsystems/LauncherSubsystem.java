@@ -23,7 +23,7 @@ public class LauncherSubsystem extends SubsystemBase {
   private final SparkMax motor2;
   private final SparkClosedLoopController pidController;
 
-  private int launchVelo = 0;
+  private int launchVelo = 5000;
 
   public LauncherSubsystem(int canId, int canid2) {
     motor = new SparkMax(canId, MotorType.kBrushless);
@@ -34,7 +34,7 @@ public class LauncherSubsystem extends SubsystemBase {
     // Configure PID for velocity control
     SparkMaxConfig config = new SparkMaxConfig();
     config.closedLoop
-        .pid(0.0001, 0, 0)
+        .pid(0.0002, 0, 0)
         .velocityFF(0.000175);
     
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -59,6 +59,12 @@ public class LauncherSubsystem extends SubsystemBase {
   public void setVelo(boolean up) {
     launchVelo += (up ? 10 : -10);
     launchVelo = (launchVelo > 6000 ? 6000 : launchVelo < 0 ? 0 : launchVelo);
+  }
+
+  public void setSetVelo(int velo) {
+    if(velo < 6000 && velo >= 0) {
+      launchVelo = velo;
+    }
   }
 
   @Override 
