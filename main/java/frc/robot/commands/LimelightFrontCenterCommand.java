@@ -70,7 +70,7 @@ public class LimelightFrontCenterCommand extends Command {
 
     if (tv && tv2) {
       double a1 = 90 - tx2;
-      double a2 = 90 - (Math.abs(tx));
+      double a2 = 90 + tx;
       double a3 = 180 - (a1 + a2);
       double s1 = 20.4; //distance between cameras
       double s2 = (s1 / Math.sin(Math.toRadians(a3))) * Math.sin(Math.toRadians(a1));

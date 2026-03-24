@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -16,60 +17,54 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 public class LauncherSubsystem extends SubsystemBase {
-  private final SparkMax motor;
-  private final SparkMax motor2;
+  private final SparkMax primaryMotor;
+  private final SparkMax secondaryMotor;
   private final SparkClosedLoopController pidController;
 
   private int launchVelo = 5000;
 
-  public LauncherSubsystem(int canId, int canid2) {
-    motor = new SparkMax(canId, MotorType.kBrushless);
-    motor2 = new SparkMax(canid2, MotorType.kBrushless);
-    motor2.isFollower();
-    pidController = motor.getClosedLoopController();
+  public LauncherSubsystem(int primaryMotorID, int secondaryMotorID) {
+    primaryMotor = new SparkMax(primaryMotorID, MotorType.kBrushless);
+    secondaryMotor = new SparkMax(secondaryMotorID, MotorType.kBrushless);
+    secondaryMotor.isFollower();
+    pidController = primaryMotor.getClosedLoopController();
 
-    // Configure PID for velocity control
     SparkMaxConfig config = new SparkMaxConfig();
     config.closedLoop
-        .pid(0.0002, 0, 0)
-        .velocityFF(0.000175);
-    
-    motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
+    .pid(0.0002, 0, 0)
+    .velocityFF(0.000175);
+    primaryMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  /**
-   * Set velocity in RPM
-   */
+  @Override 
+  public void periodic() {
+    SmartDashboard.putNumber("LAUNCHER VELO", launchVelo);
+  }
+
   public void setVelocity(double velocityRPM) {
     pidController.setReference(velocityRPM, SparkMax.ControlType.kVelocity);
   }
 
   public void stop() {
-    motor.stopMotor();
+    primaryMotor.stopMotor();
   }
 
   public void setVelocityByVelo() {
     pidController.setReference(launchVelo, SparkMax.ControlType.kVelocity);
   }
 
-  public void setVelo(boolean up) {
-    launchVelo += (up ? 10 : -10);
-    launchVelo = (launchVelo > 6000 ? 6000 : launchVelo < 0 ? 0 : launchVelo);
+  public void increaseVelo() {
+    launchVelo += (launchVelo + 10) <= 6000 ? 10 : 0;
   }
 
-  public void setSetVelo(int velo) {
-    if(velo < 6000 && velo >= 0) {
+  public void decreaseVelo() {
+    launchVelo -= (launchVelo - 10) >= 0 ? 10 : 0;
+  }
+
+  public void setVelo(int velo) {
+    if (velo < 6000 && velo >= 0) {
       launchVelo = velo;
     }
-  }
-
-  @Override 
-  public void periodic() {
-    //launchVelo = SmartDashboard.getNumber("LAUNCHER VELO");
-    SmartDashboard.putNumber("LAUNCHER VELO", launchVelo);
   }
 }

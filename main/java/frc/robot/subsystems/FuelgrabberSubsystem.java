@@ -20,41 +20,15 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 
 public class FuelgrabberSubsystem extends SubsystemBase {
-
-  // Motors
-  private final SparkMax slide;
   private final SparkMax scooper;
   private final SparkMax roller;
 
-  // Encoder + PID
-  private final RelativeEncoder slideEncoder;
-  private final PIDController slidePID;
-
-  // Target position (motor rotations)
-  private double slideTraj;
-
   private final SparkClosedLoopController rollerPidController;
   private final SparkClosedLoopController scooperPidController;
-  /**
-   * slideID = 9
-   * scooperID = 1
-   * rollerID = 10
-   */
-  public FuelgrabberSubsystem(int slideID, int scooperID, int rollerID) {
 
-    slide = new SparkMax(slideID, MotorType.kBrushless);
+  public FuelgrabberSubsystem(int scooperID, int rollerID) {
     scooper = new SparkMax(scooperID, MotorType.kBrushless);
     roller = new SparkMax(rollerID, MotorType.kBrushless);
-
-    // NEO 1.1 internal encoder
-    slideEncoder = slide.getEncoder();
-    slideEncoder.setPosition(0.0); // zero on boot (or after homing)
-
-    // PID: P only for now
-    slidePID = new PIDController(0.02, 0.0, 0);
-    slidePID.setTolerance(0.1); // motor rotations
-
-    slideTraj = 0.0;
 
     rollerPidController = roller.getClosedLoopController();
     SparkMaxConfig rollerConfig = new SparkMaxConfig();
@@ -72,33 +46,7 @@ public class FuelgrabberSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    double output = slidePID.calculate(slideEncoder.getPosition(), slideTraj);
-    slide.set(MathUtil.clamp(output, -1.0, 1.0));
-
-    SmartDashboard.putNumber("Slide Position (rot)", slideEncoder.getPosition());
-    SmartDashboard.putNumber("Slide Target (rot)", slideTraj);
-    SmartDashboard.putNumber("Slide PID Output", output);
-  }
-
-  // ---------------- Slide Control ----------------
-
-  
-   
-  public void setSlideTraj(double traj) {
-    slideTraj = traj;
-  }
-
-  public boolean slideAtTraj() {
-    //return slidePID.atSetpoint();
-    return Math.abs(slideEncoder.getPosition() - slideTraj) < 0.15;
-  }
-
-  public void zeroSlideEncoder() {
-    slideEncoder.setPosition(0.0);
-  }
-
-  // ---------------- Intake Motors ----------------
+  public void periodic() {}
 
   public void setScooperSpeed(double speed) {
     scooper.set(speed);

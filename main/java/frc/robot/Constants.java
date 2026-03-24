@@ -38,11 +38,11 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
-    public static final double kMaxSpeedMetersPerSecond = 0.5;   //@SPEED
+    public static final double kMaxSpeedMetersPerSecond = 0.5;   //SPEED
     public static final double kMaxAngularSpeed = 1 * Math.PI; // radians per second
 
     // Chassis configuration
-    public static final double kTrackWidth = Units.inchesToMeters(23.5);  //ONCE ROBOT IS BUILT FIX THESE VALUES @GEOM
+    public static final double kTrackWidth = Units.inchesToMeters(23.5);  //ONCE ROBOT IS BUILT FIX THESE VALUES 
     // Distance between centers of right and left wheels on robot
     public static final double kWheelBase = Units.inchesToMeters(23.5);
     // Distance between front and back wheels on robot
@@ -66,7 +66,7 @@ public final class Constants {
 
     public static final int kFrontLeftTurningCanId = 8;
     public static final int kRearLeftTurningCanId = 7;
-    public static final int kFrontRightTurningCanId =5;
+    public static final int kFrontRightTurningCanId = 5;
     public static final int kRearRightTurningCanId = 6;
 
     public static final boolean kGyroReversed = false;
@@ -80,7 +80,7 @@ public final class Constants {
 
     // Calculations required for driving motor conversion factors and feed forward
     public static final double kDrivingMotorFreeSpeedRps = NeoMotorConstants.kFreeSpeedRpm / 60;
-    public static final double kWheelDiameterMeters = 0.0762;  //FANCY STUFF MAYBE CHANGE FOR AUTO @AUTO
+    public static final double kWheelDiameterMeters = 0.0762;  //FANCY STUFF MAYBE CHANGE FOR AUTO 
     public static final double kWheelCircumferenceMeters = kWheelDiameterMeters * Math.PI;
     // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
     // teeth on the bevel pinion
@@ -89,9 +89,10 @@ public final class Constants {
         / kDrivingMotorReduction;
   }
 
-  public static final class OIConstants {  //CONTROLLER KEEP PORT AT ONE IN DRIVER STATION MAKE SURE @CONT
+  public static final class OIConstants {  //CONTROLLER KEEP PORT AT ONE IN DRIVER STATION MAKE SURE 
     public static final int kDriverControllerPort = 0;
-    public static final double kDriveDeadband = 0.05;  //IF THERE IS DRIFT FIX THIS VALUE @CONT
+    public static final int kCopilotControllerPort = 1;
+    public static final double kDriveDeadband = 0.05;  //IF THERE IS DRIFT FIX THIS VALUE 
   }
 
   public static final class AutoConstants {
@@ -108,15 +109,20 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
 
-    public static final PIDConstants TRANSLATION_PID = new PIDConstants(1.3, 0, 0);
-    public static final PIDConstants ANGLE_PID = new PIDConstants(.002, 0, 0);//0.01
+    public static final PIDConstants TRANSLATION_PID = new PIDConstants(5, 0, 0);
+    public static final PIDConstants ANGLE_PID = new PIDConstants(5, 0, 0);//0.01
 
     public static final PathFollowingController AUTON_CONTROLLER = new PPHolonomicDriveController(
-        TRANSLATION_PID, // new PIDConstants(5, 0.0, 0.0), // Translation PID constants
-        ANGLE_PID); // new PIDConstants(5, 0.0, 0.0)); // Rotation PID constants
+        TRANSLATION_PID,
+        ANGLE_PID);
   }
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
+  }
+
+  public static final class IntakeModuleConstants {
+    public static final double UP_POSITION = -4.0;
+    public static final double DOWN_POSITION = 20.0;
   }
 }

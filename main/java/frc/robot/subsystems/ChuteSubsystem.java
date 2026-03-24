@@ -4,24 +4,16 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ChuteSubsystem extends SubsystemBase {
-  private SparkMax motor;
-
-
-  //private RelativeEncoder encoder;
-  //private PIDController pid;
-
+  private SparkMax chuteMotor;
 
   public ChuteSubsystem(int mid) {
-    motor = new SparkMax(mid, MotorType.kBrushless);
+    chuteMotor = new SparkMax(mid, MotorType.kBrushless);
   }
 
   @Override
@@ -29,10 +21,10 @@ public class ChuteSubsystem extends SubsystemBase {
   }
 
   public void setChuteSpeed(double speed) {
-    motor.set(speed);
+    chuteMotor.set(speed);
   }
 
   public double getChuteSpeed() {
-    return motor.get();
+    return chuteMotor.get();
   }
 }
