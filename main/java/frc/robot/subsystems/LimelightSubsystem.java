@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
 import frc.robot.LimelightHelpers;
+import frc.robot.Constants.LimelightConstants;
+import frc.robot.Constants.LauncherConstants;
 
 import java.util.ArrayList;
 
@@ -22,24 +24,13 @@ import java.lang.Math;
 
 public class LimelightSubsystem extends SubsystemBase {
   private String ll;
-  //Shuffleboard shuffle = new Shuffleboard();
 
-  //private int lastVelo;
   public static int lastVelo = 0;
   private int dt;
-
-  //private ArrayList<Double> tyAverage;
 
   public LimelightSubsystem(String ll) {
     this.ll = ll;
 
-    /*LimelightHelpers.setFiducial3DOffset(ll,
-      -0.597,
-      0, //OFFSET ON ROBOT
-      0
-    );*/
-
-    //lastVelo = 0;
     dt = 0;
   }
 
@@ -100,11 +91,11 @@ public class LimelightSubsystem extends SubsystemBase {
     }
     double d = (h2 - h1) / a;*/
 
-    double h1 = 20.5;
-    double h2 = 44.25;
-    double w = 20.4;
+    double h1 = LimelightConstants.LIMELIGHT_HEIGHT;
+    double h2 = LimelightConstants.APRIL_TAG_HEIGHT;
+    double w = LimelightConstants.LIMELIGHT_SPACING;
     double wh = w/2;
-    double a = Math.abs(Math.toRadians(getLLTX()));
+    double a = Math.toRadians(90 - Math.abs(getLLTX()));
     double ct = h2 - h1;
     double st = wh * Math.tan(a);
     double am = Math.asin(ct/st);
@@ -118,7 +109,8 @@ public class LimelightSubsystem extends SubsystemBase {
 
     if (!getLLTV() || (d == 0)) {
       dt++;
-      lastVelo -= 10 * dt;
+      lastVelo -= LauncherConstants.VELOCITY_DOWNTIME_SMOOTHING * dt;
+      lastVelo = MathUtil.clamp(lastVelo, 0, LauncherConstants.MAX_VELOCITY);
       return lastVelo;
     }
 
@@ -140,15 +132,15 @@ public class LimelightSubsystem extends SubsystemBase {
     //velo = (0.0653108 * Math.pow(Math.abs(d), 2)) - (6.10119 * Math.abs(d)) + 3390.95238;
     velo = (0.0719246 * Math.pow(Math.abs(d), 2)) - (7.52976 * Math.abs(d)) + 3461.42857;
 
-    velo = /*MathUtil.clamp(velo, 0, 6000);*/(velo > 6000 ? 6000 : velo < 0 ? 0 : velo);//Math.clamp(0, 7000);
+    velo = MathUtil.clamp(velo, 0, LauncherConstants.MAX_VELOCITY);
 
     int veloInt = (int) Math.floor(velo); 
-    veloInt = (veloInt > lastVelo + 5 && veloInt < lastVelo + 80 ? lastVelo : veloInt < lastVelo - 5 && veloInt > lastVelo - 80 ? lastVelo : veloInt);
+    veloInt = (veloInt > lastVelo + LauncherConstants.VELOCITY_DROP_SMOOTHING && veloInt < lastVelo + LauncherConstants.VELOCITY_RAMP_SMOOTHING ? lastVelo : veloInt < lastVelo - LauncherConstants.VELOCITY_DROP_SMOOTHING && veloInt > lastVelo - LauncherConstants.VELOCITY_RAMP_SMOOTHING ? lastVelo : veloInt);
 
     SmartDashboard.putNumber("RPM", veloInt);
   
 
     lastVelo = veloInt;
     return veloInt; //
-  }//CHANGE TO CALCULATE TO HUB INSTEAD OF APRIL TAG
-}//156.6688    82.016  76.17
+  }
+}

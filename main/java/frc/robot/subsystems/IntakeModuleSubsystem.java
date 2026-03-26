@@ -24,7 +24,7 @@ public class IntakeModuleSubsystem extends SubsystemBase {
     this.intakeModuleMotor = new SparkMax(intakeModuleMotorId, MotorType.kBrushless);
     this.intakeModuleEncoder = intakeModuleMotor.getEncoder();
     this.intakeModuleEncoder.setPosition(0.0);
-    this.intakeModulePID = new PIDController(0.02, 0.0, 0.0);
+    this.intakeModulePID = new PIDController(0.05, 0.0, 0.0);
     this.intakeModulePID.setTolerance(0.1);
     this.intakeModulePIDTrajectory = 0.0;
   }
@@ -36,7 +36,13 @@ public class IntakeModuleSubsystem extends SubsystemBase {
   }
 
   public void setIntakeModulePosition(double position) {
-    intakeModulePIDTrajectory = MathUtil.clamp(position, IntakeModuleConstants.UP_POSITION, IntakeModuleConstants.DOWN_POSITION);
+    if (position < intakeModuleEncoder.getPosition()) {
+      // Moving IN → stop early at 4
+      intakeModulePIDTrajectory = Math.max(position, 20.0);
+    } else {
+      // Moving OUT → allow full range
+      intakeModulePIDTrajectory = position;
+    }//intakeModulePIDTrajectory = MathUtil.clamp(position, IntakeModuleConstants.UP_POSITION, IntakeModuleConstants.DOWN_POSITION);
   }
 
   public void setIntakeModuleUp() {

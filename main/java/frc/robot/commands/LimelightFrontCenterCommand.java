@@ -75,15 +75,15 @@ public class LimelightFrontCenterCommand extends Command {
       double s1 = 20.4; //distance between cameras
       double s2 = (s1 / Math.sin(Math.toRadians(a3))) * Math.sin(Math.toRadians(a1));
       double m = Math.sqrt((Math.pow(s1/2, 2) + Math.pow(s2, 2)) - s1 * s2 * Math.cos(Math.toRadians(a2)));
-      double am = Math.asin((Math.sin(Math.toRadians(a2)) * s2) / m);
+      double am = Math.toDegrees(Math.asin((Math.sin(Math.toRadians(a2)) * s2) / m));
 
-      rot = pidR.calculate(am - 90, FINAL_TX);
+      rot = pidR.calculate(-(am - 90), FINAL_TX);
       if (Math.abs(tx) < 3.0) {
         rot = 0;
       }
       rot = MathUtil.clamp(rot, -MAX_ROT, MAX_ROT);
 
-      SmartDashboard.putNumber("AM: ", am - 90);
+      SmartDashboard.putNumber("AM: ", am);
     } else if (tv) {
       rot = pidR.calculate(tx, FINAL_TX);
       //xSpeed = pidX.calculate(tx, FINAL_TX);

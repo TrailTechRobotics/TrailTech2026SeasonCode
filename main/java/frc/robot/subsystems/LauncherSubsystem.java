@@ -10,12 +10,14 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import frc.robot.Constants.LauncherConstants;
 
 public class LauncherSubsystem extends SubsystemBase {
   private final SparkMax primaryMotor;
@@ -55,15 +57,15 @@ public class LauncherSubsystem extends SubsystemBase {
   }
 
   public void increaseVelo() {
-    launchVelo += (launchVelo + 10) <= 6000 ? 10 : 0;
+    launchVelo += (launchVelo + LauncherConstants.VELOCITY_CHANGE_RATE) <= LauncherConstants.MAX_VELOCITY ? LauncherConstants.VELOCITY_CHANGE_RATE : 0;
   }
 
   public void decreaseVelo() {
-    launchVelo -= (launchVelo - 10) >= 0 ? 10 : 0;
+    launchVelo -= (launchVelo - LauncherConstants.VELOCITY_CHANGE_RATE) >= 0 ? LauncherConstants.VELOCITY_CHANGE_RATE : 0;
   }
 
   public void setVelo(int velo) {
-    if (velo < 6000 && velo >= 0) {
+    if (velo < LauncherConstants.MAX_VELOCITY && velo >= 0) {
       launchVelo = velo;
     }
   }

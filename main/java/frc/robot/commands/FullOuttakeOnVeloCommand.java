@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.FuelgrabberSubsystem;
+import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.ChuteSubsystem;
 import frc.robot.subsystems.LauncherSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -13,24 +13,24 @@ import frc.robot.subsystems.LimelightSubsystem;
 
 //You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class FullOuttakeOnVeloCommand extends Command {
-  private FuelgrabberSubsystem fuelGrabber;
+  private HopperSubsystem hopper;
   private ChuteSubsystem chute;
   private LauncherSubsystem launcher;
 
-  private int scooperVelo;
+  private int rollerVelo;
   private int chuteSpeed;
   private int launcherVelo;
 
  // private int time;
 
-  public FullOuttakeOnVeloCommand(FuelgrabberSubsystem fuelGrabber, ChuteSubsystem chute, LauncherSubsystem launcher, int scooperVelo, int chuteSpeed, int launcherVelo) {
-    this.fuelGrabber = fuelGrabber;
+  public FullOuttakeOnVeloCommand(HopperSubsystem hopper, ChuteSubsystem chute, LauncherSubsystem launcher, int rollerVelo, int chuteSpeed, int launcherVelo) {
+    this.hopper = hopper;
     this.chute = chute;
     this.launcher = launcher;
 
-    addRequirements(fuelGrabber, chute, launcher);
+    addRequirements(hopper, chute, launcher);
 
-    this.scooperVelo = scooperVelo;
+    this.rollerVelo = rollerVelo;
     this.chuteSpeed = chuteSpeed;
     this.launcherVelo = launcherVelo;
 
@@ -43,7 +43,7 @@ public class FullOuttakeOnVeloCommand extends Command {
 
   @Override
   public void execute() {
-    fuelGrabber.setScooperVelocity(scooperVelo);
+    hopper.setRollerVelocity(rollerVelo);
     chute.setChuteSpeed(chuteSpeed);
     //launcher.setVelocity(launcherVelo);
     launcher.setVelocity(launcherVelo);
@@ -52,7 +52,7 @@ public class FullOuttakeOnVeloCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    fuelGrabber.stopScooper();
+    hopper.stopRoller();
     chute.setChuteSpeed(0);
     launcher.stop();
   }

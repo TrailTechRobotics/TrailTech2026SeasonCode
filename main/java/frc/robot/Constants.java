@@ -122,7 +122,22 @@ public final class Constants {
   }
 
   public static final class IntakeModuleConstants {
-    public static final double UP_POSITION = -4.0;
+    public static final double UP_POSITION = 2.0;
     public static final double DOWN_POSITION = 20.0;
+  }
+
+  public static final class LimelightConstants {
+    public static final double APRIL_TAG_HEIGHT = 44.25;
+    public static final double LIMELIGHT_HEIGHT = 20.5;
+    public static final double LIMELIGHT_SPACING = 20.4;
+    public static final double APRIL_TAG_FRONT_OFFSET = -0.597;
+  }
+
+  public static final class LauncherConstants {
+    public static final int MAX_VELOCITY = 6000;
+    public static final int VELOCITY_DOWNTIME_SMOOTHING = 10;
+    public static final int VELOCITY_DROP_SMOOTHING = 5;
+    public static final int VELOCITY_RAMP_SMOOTHING = 80;
+    public static final int VELOCITY_CHANGE_RATE = 10;
   }
 }
