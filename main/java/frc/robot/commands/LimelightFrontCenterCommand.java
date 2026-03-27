@@ -79,6 +79,7 @@ public class LimelightFrontCenterCommand extends Command {
 
       rot = pidR.calculate(-(am - 90), FINAL_TX);
       if (Math.abs(tx) < 3.0) {
+        pidR.reset();
         rot = 0;
       }
       rot = MathUtil.clamp(rot, -MAX_ROT, MAX_ROT);
@@ -94,6 +95,7 @@ public class LimelightFrontCenterCommand extends Command {
       //ySpeed *= scale;
 
       if (Math.abs(tx) < 3.0) {
+        pidR.reset();
         rot = 0;
       }
       //if (Math.abs(xSpeed) > 0.02) {
@@ -108,6 +110,7 @@ public class LimelightFrontCenterCommand extends Command {
     } else if (tv2) {
       rot = pidR.calculate(tx2, FINAL_TX);
       if (Math.abs(tx2) < 3.0) {
+        pidR.reset();
         rot = 0;
       }
       rot = MathUtil.clamp(rot, -MAX_ROT, MAX_ROT);
@@ -126,7 +129,7 @@ public class LimelightFrontCenterCommand extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    m_drive.drive(0, 0, 0, true);
+    m_drive.drive(0, 0, 0, false);
   }
 
   @Override
