@@ -106,8 +106,8 @@ public class LimelightFrontCenterCommand extends Command {
       //xSpeed = MathUtil.clamp(xSpeed, -MAX_MOVE, MAX_MOVE);
       //ySpeed = MathUtil.clamp(ySpeed, -MAX_MOVE, MAX_MOVE);
     } else if (tv2) {
-      rot = pidR.calculate(tx, FINAL_TX);
-      if (Math.abs(tx) < 3.0) {
+      rot = pidR.calculate(tx2, FINAL_TX);
+      if (Math.abs(tx2) < 3.0) {
         rot = 0;
       }
       rot = MathUtil.clamp(rot, -MAX_ROT, MAX_ROT);
